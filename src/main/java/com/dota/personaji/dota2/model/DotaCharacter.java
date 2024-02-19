@@ -14,8 +14,6 @@ public class DotaCharacter {
     private int dexterity;
     private int intelligence;
     private String appointment;
-
-    public DotaCharacter(){}
     public Long getId() {
         return id;
     }
