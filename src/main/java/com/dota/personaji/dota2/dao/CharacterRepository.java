@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ICharacterRepository extends JpaRepository<DotaCharacter, Long> {
+public interface CharacterRepository extends JpaRepository<DotaCharacter, Long> {
     List<DotaCharacter> findAllByOrderByNameDesc();
     List<DotaCharacter> findAllByOrderByPowerDesc();
     List<DotaCharacter> findAllByOrderByDexterityDesc();
