@@ -1,6 +1,6 @@
 package com.dota.personaji.dota2.service;
 
-import com.dota.personaji.dota2.dao.CharacterRepository;
+import com.dota.personaji.dota2.dao.ICharacterRepository;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,42 +10,42 @@ import java.util.List;
 @Service
 public class DotaCharacterService {
 
-    private final CharacterRepository characterRepository;
+    private final ICharacterRepository ICharacterRepository;
 
     @Autowired
-    public DotaCharacterService(CharacterRepository characterRepository) {
-        this.characterRepository = characterRepository;
+    public DotaCharacterService(ICharacterRepository ICharacterRepository) {
+        this.ICharacterRepository = ICharacterRepository;
     }
 
     public List<DotaCharacter> getAllCharacters() {
-        return characterRepository.findAll();
+        return ICharacterRepository.findAll();
     }
 
     public DotaCharacter getCharacterById(Long id) {
-        return characterRepository.findById(id).orElse(null);
+        return ICharacterRepository.findById(id).orElse(null);
     }
 
     public void saveCharacter(DotaCharacter dotaCharacter) {
-        characterRepository.save(dotaCharacter);
+        ICharacterRepository.save(dotaCharacter);
     }
 
     public void deleteCharacter(Long id) {
-        characterRepository.deleteById(id);
+        ICharacterRepository.deleteById(id);
     }
 
     public List<DotaCharacter> getCharactersByPowerDesc() {
-        return characterRepository.findAllByOrderByPowerDesc();
+        return ICharacterRepository.findAllByOrderByPowerDesc();
     }
 
     public List<DotaCharacter> getCharactersByDexterityDesc() {
-        return characterRepository.findAllByOrderByDexterityDesc();
+        return ICharacterRepository.findAllByOrderByDexterityDesc();
     }
 
     public List<DotaCharacter> getCharactersByIntelligenceDesc() {
-        return characterRepository.findAllByOrderByIntelligenceDesc();
+        return ICharacterRepository.findAllByOrderByIntelligenceDesc();
     }
 
     public List<DotaCharacter> getCharacterByName(String name) {
-        return characterRepository.findByName(name);
+        return ICharacterRepository.findByName(name);
     }
 }
