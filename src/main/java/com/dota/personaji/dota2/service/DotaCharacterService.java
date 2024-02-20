@@ -10,42 +10,42 @@ import java.util.List;
 @Service
 public class DotaCharacterService {
 
-    private final CharacterRepository CharacterRepository;
+    private final CharacterRepository characterRepository;
 
     @Autowired
-    public DotaCharacterService(CharacterRepository CharacterRepository) {
-        this.CharacterRepository = CharacterRepository;
+    public DotaCharacterService(CharacterRepository characterRepository) {
+        this.characterRepository = characterRepository;
     }
 
     public List<DotaCharacter> getAllCharacters() {
-        return CharacterRepository.findAll();
+        return characterRepository.findAll();
     }
 
     public DotaCharacter getCharacterById(Long id) {
-        return CharacterRepository.findById(id).orElse(null);
+        return characterRepository.findById(id).orElse(null);
     }
 
     public void saveCharacter(DotaCharacter dotaCharacter) {
-        CharacterRepository.save(dotaCharacter);
+        characterRepository.save(dotaCharacter);
     }
 
     public void deleteCharacter(Long id) {
-        CharacterRepository.deleteById(id);
+        characterRepository.deleteById(id);
     }
 
     public List<DotaCharacter> getCharactersByPowerDesc() {
-        return CharacterRepository.findAllByOrderByPowerDesc();
+        return characterRepository.findAllByOrderByPowerDesc();
     }
 
     public List<DotaCharacter> getCharactersByDexterityDesc() {
-        return CharacterRepository.findAllByOrderByDexterityDesc();
+        return characterRepository.findAllByOrderByDexterityDesc();
     }
 
     public List<DotaCharacter> getCharactersByIntelligenceDesc() {
-        return CharacterRepository.findAllByOrderByIntelligenceDesc();
+        return characterRepository.findAllByOrderByIntelligenceDesc();
     }
 
     public List<DotaCharacter> getCharacterByName(String name) {
-        return CharacterRepository.findByName(name);
+        return characterRepository.findByName(name);
     }
 }
