@@ -15,4 +15,5 @@
 
 Для подтверждения чистоты кода используется SonarCloud:
 
-```https://sonarcloud.io/project/overview?id=leonnik28_JavaWorkTerm4
+```bash
+https://sonarcloud.io/project/overview?id=leonnik28_JavaWorkTerm4
