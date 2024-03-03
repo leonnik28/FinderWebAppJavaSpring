@@ -1,7 +1,9 @@
 package com.dota.personaji.dota2.model;
 
 import jakarta.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.util.ArrayList;
+import java.util.List;
 @Entity
 @Table(name = "dotacharacters")
 public class DotaCharacter {
@@ -11,9 +13,13 @@ public class DotaCharacter {
 
     private String name;
     private int power;
-    private int dexterity;
+    private int agility;
     private int intelligence;
-    private String appointment;
+    private String attacktype;
+    @OneToMany(mappedBy = "character", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Ability> abilities;
+
     public Long getId() {
         return id;
     }
@@ -38,12 +44,12 @@ public class DotaCharacter {
         this.power = power;
     }
 
-    public int getDexterity() {
-        return dexterity;
+    public int getAgility() {
+        return agility;
     }
 
-    public void setDexterity(int dexterity) {
-        this.dexterity = dexterity;
+    public void setAgility(int dexterity) {
+        this.agility = dexterity;
     }
 
     public int getIntelligence() {
@@ -54,11 +60,27 @@ public class DotaCharacter {
         this.intelligence = intelligence;
     }
 
-    public String getAppointment() {
-        return appointment;
+    public String getAttacktype() {
+        return attacktype;
     }
 
-    public void setAppointment(String appointment) {
-        this.appointment = appointment;
+    public void setAttacktype(String appointment) {
+        this.attacktype = appointment;
+    }
+
+    public List<Ability> getAbilities() {
+        return abilities;
+    }
+
+    public void setAbilities(List<Ability> abilities) {
+        this.abilities = abilities;
+    }
+
+    public void addAbility(Ability ability) {
+        if (abilities == null) {
+            abilities = new ArrayList<>();
+        }
+        abilities.add(ability);
+        ability.setCharacter(this);
     }
 }

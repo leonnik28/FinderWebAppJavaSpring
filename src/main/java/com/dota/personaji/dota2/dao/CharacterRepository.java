@@ -10,7 +10,7 @@ import java.util.List;
 public interface CharacterRepository extends JpaRepository<DotaCharacter, Long> {
     List<DotaCharacter> findAllByOrderByNameDesc();
     List<DotaCharacter> findAllByOrderByPowerDesc();
-    List<DotaCharacter> findAllByOrderByDexterityDesc();
+    List<DotaCharacter> findAllByOrderByAgilityDesc();
     List<DotaCharacter> findAllByOrderByIntelligenceDesc();
     List<DotaCharacter> findByName(String name);
 }

@@ -1,7 +1,9 @@
 package com.dota.personaji.dota2.service;
 
 import com.dota.personaji.dota2.dao.CharacterRepository;
+import com.dota.personaji.dota2.dao.AbilityRepository;
 import com.dota.personaji.dota2.model.DotaCharacter;
+import com.dota.personaji.dota2.model.Ability;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +13,12 @@ import java.util.List;
 public class DotaCharacterService {
 
     private final CharacterRepository characterRepository;
+    private final AbilityRepository abilityRepository;
 
     @Autowired
-    public DotaCharacterService(CharacterRepository characterRepository) {
+    public DotaCharacterService(CharacterRepository characterRepository, AbilityRepository abilityRepository) {
         this.characterRepository = characterRepository;
+        this.abilityRepository = abilityRepository;
     }
 
     public List<DotaCharacter> getAllCharacters() {
@@ -25,27 +29,74 @@ public class DotaCharacterService {
         return characterRepository.findById(id).orElse(null);
     }
 
-    public void saveCharacter(DotaCharacter dotaCharacter) {
-        characterRepository.save(dotaCharacter);
+    public List<DotaCharacter> getCharacterByName(String name) {
+        return characterRepository.findByName(name);
     }
 
-    public void deleteCharacter(Long id) {
-        characterRepository.deleteById(id);
+    public List<Ability> getAbilitiesByCharacterId(Long id) {
+        return abilityRepository.findByCharacterId(id);
+    }
+
+    public List<Ability> getAbilitiesByCharacterName(String name) {
+        return abilityRepository.findByCharacterName(name);
     }
 
     public List<DotaCharacter> getCharactersByPowerDesc() {
         return characterRepository.findAllByOrderByPowerDesc();
     }
 
-    public List<DotaCharacter> getCharactersByDexterityDesc() {
-        return characterRepository.findAllByOrderByDexterityDesc();
+    public List<DotaCharacter> getCharactersByAgilityDesc() {
+        return characterRepository.findAllByOrderByAgilityDesc();
     }
 
     public List<DotaCharacter> getCharactersByIntelligenceDesc() {
         return characterRepository.findAllByOrderByIntelligenceDesc();
     }
 
-    public List<DotaCharacter> getCharacterByName(String name) {
-        return characterRepository.findByName(name);
+    public void saveCharacter(DotaCharacter dotaCharacter) {
+        characterRepository.save(dotaCharacter);
+    }
+
+    public DotaCharacter addAbilityToCharacter(Long characterId, Long abilityId) {
+        DotaCharacter character = characterRepository.findById(characterId)
+                .orElseThrow(() -> new RuntimeException("Character not found for this id :: " + characterId));
+        Ability ability = abilityRepository.findById(abilityId)
+                .orElseThrow(() -> new RuntimeException("Ability not found for this id :: " + abilityId));
+
+        character.addAbility(ability);
+        return characterRepository.save(character);
+    }
+
+    public DotaCharacter updateCharacter(Long id, DotaCharacter characterDetails) {
+        DotaCharacter character = characterRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Character not found for this id :: " + id));
+
+        character.setName(characterDetails.getName());
+        character.setPower(characterDetails.getPower());
+        character.setAgility(characterDetails.getAgility());
+        character.setIntelligence(characterDetails.getIntelligence());
+        character.setAttacktype(characterDetails.getAttacktype());
+
+        final DotaCharacter updatedCharacter = characterRepository.save(character);
+        return updatedCharacter;
+    }
+
+    public DotaCharacter patchCharacter(Long id, DotaCharacter characterDetails) {
+        DotaCharacter character = characterRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Character not found for this id :: " + id));
+
+        if (characterDetails.getName() != null) {
+            character.setName(characterDetails.getName());
+        }
+        if (characterDetails.getAttacktype() != null) {
+            character.setAttacktype(characterDetails.getAttacktype());
+        }
+
+        final DotaCharacter patchedCharacter = characterRepository.save(character);
+        return patchedCharacter;
+    }
+
+    public void deleteCharacter(Long id) {
+        characterRepository.deleteById(id);
     }
 }

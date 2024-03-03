@@ -1,6 +1,7 @@
 package com.dota.personaji.dota2.controller;
 
 import com.dota.personaji.dota2.model.DotaCharacter;
+import com.dota.personaji.dota2.model.Ability;
 import com.dota.personaji.dota2.service.DotaCharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,16 +29,19 @@ public class CharacterController {
         return characterService.getCharacterById(id);
     }
 
-    @PostMapping("/characters/create")
-    public DotaCharacter saveCharacter(@RequestBody DotaCharacter dotaCharacter) {
-        characterService.saveCharacter(dotaCharacter);
-        return dotaCharacter;
+    @GetMapping("/characters/name/{name}")
+    public List<DotaCharacter> getCharacterByName(@PathVariable String name) {
+        return characterService.getCharacterByName(name);
     }
 
-    @DeleteMapping("/characters/delete/{id}")
-    public String deleteCharacter(@PathVariable Long id) {
-        characterService.deleteCharacter(id);
-        return "Deleted character id - " + id;
+    @GetMapping("/characters/{id}/abilities")
+    public List<Ability> getAbilitiesByCharacterId(@PathVariable Long id) {
+        return characterService.getAbilitiesByCharacterId(id);
+    }
+
+    @GetMapping("/characters/name/{characterName}/abilities")
+    public List<Ability> getAbilitiesByCharacterName(@PathVariable String characterName) {
+        return characterService.getAbilitiesByCharacterName(characterName);
     }
 
     @GetMapping("/characters/power")
@@ -45,9 +49,9 @@ public class CharacterController {
         return characterService.getCharactersByPowerDesc();
     }
 
-    @GetMapping("/characters/dexterity")
-    public List<DotaCharacter> getCharactersByDexterityDesc() {
-        return characterService.getCharactersByDexterityDesc();
+    @GetMapping("/characters/agility")
+    public List<DotaCharacter> getCharactersByAgilityDesc() {
+        return characterService.getCharactersByAgilityDesc();
     }
 
     @GetMapping("/characters/intelligence")
@@ -55,8 +59,30 @@ public class CharacterController {
         return characterService.getCharactersByIntelligenceDesc();
     }
 
-    @GetMapping("/characters/name/{name}")
-    public List<DotaCharacter> getCharacterByName(@PathVariable String name) {
-        return characterService.getCharacterByName(name);
+    @PostMapping("/characters/create")
+    public DotaCharacter saveCharacter(@RequestBody DotaCharacter dotaCharacter) {
+        characterService.saveCharacter(dotaCharacter);
+        return dotaCharacter;
+    }
+
+    @PutMapping("/characters/{characterId}/add/{abilityId}")
+    public DotaCharacter addAbilityToCharacter(@PathVariable Long abilityId, @PathVariable Long characterId) {
+        return characterService.addAbilityToCharacter(characterId, abilityId);
+    }
+
+    @PutMapping("/characters/update/{id}")
+    public DotaCharacter updateCharacter(@PathVariable Long id, @RequestBody DotaCharacter dotaCharacter) {
+        return characterService.updateCharacter(id, dotaCharacter);
+    }
+
+    @PatchMapping("/characters/patch/{id}")
+    public DotaCharacter patchCharacter(@PathVariable Long id, @RequestBody DotaCharacter dotaCharacter) {
+        return characterService.patchCharacter(id, dotaCharacter);
+    }
+
+    @DeleteMapping("/characters/delete/{id}")
+    public String deleteCharacter(@PathVariable Long id) {
+        characterService.deleteCharacter(id);
+        return "Deleted character id - " + id;
     }
 }
