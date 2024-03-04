@@ -15,6 +15,8 @@ public class DotaCharacterService {
     private final CharacterRepository characterRepository;
     private final AbilityRepository abilityRepository;
 
+    private static final String CHARACTER_NOT_FOUND_MESSAGE = "Character not found for this id :: ";
+
     @Autowired
     public DotaCharacterService(CharacterRepository characterRepository, AbilityRepository abilityRepository) {
         this.characterRepository = characterRepository;
@@ -59,7 +61,7 @@ public class DotaCharacterService {
 
     public DotaCharacter addAbilityToCharacter(Long characterId, Long abilityId) {
         DotaCharacter character = characterRepository.findById(characterId)
-                .orElseThrow(() -> new RuntimeException("Character not found for this id :: " + characterId));
+                .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE + characterId));
         Ability ability = abilityRepository.findById(abilityId)
                 .orElseThrow(() -> new RuntimeException("Ability not found for this id :: " + abilityId));
 
@@ -69,7 +71,7 @@ public class DotaCharacterService {
 
     public DotaCharacter updateCharacter(Long id, DotaCharacter characterDetails) {
         DotaCharacter character = characterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Character not found for this id :: " + id));
+                .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE + id));
 
         character.setName(characterDetails.getName());
         character.setPower(characterDetails.getPower());
@@ -77,13 +79,12 @@ public class DotaCharacterService {
         character.setIntelligence(characterDetails.getIntelligence());
         character.setAttacktype(characterDetails.getAttacktype());
 
-        final DotaCharacter updatedCharacter = characterRepository.save(character);
-        return updatedCharacter;
+        return characterRepository.save(character);
     }
 
     public DotaCharacter patchCharacter(Long id, DotaCharacter characterDetails) {
         DotaCharacter character = characterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Character not found for this id :: " + id));
+                .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE + id));
 
         if (characterDetails.getName() != null) {
             character.setName(characterDetails.getName());
@@ -92,8 +93,7 @@ public class DotaCharacterService {
             character.setAttacktype(characterDetails.getAttacktype());
         }
 
-        final DotaCharacter patchedCharacter = characterRepository.save(character);
-        return patchedCharacter;
+        return characterRepository.save(character);
     }
 
     public void deleteCharacter(Long id) {

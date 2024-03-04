@@ -3,7 +3,6 @@ package com.dota.personaji.dota2.service;
 import com.dota.personaji.dota2.dao.AbilityRepository;
 import com.dota.personaji.dota2.dao.CharacterRepository;
 import com.dota.personaji.dota2.model.Ability;
-import com.dota.personaji.dota2.model.DotaCharacter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +13,8 @@ public class AbilityService {
 
     private final AbilityRepository abilityRepository;
     private final CharacterRepository characterRepository;
+
+    private static final String ABILITY_NOT_FOUND_MESSAGE = "Ability not found for this id :: ";
 
     @Autowired
     public AbilityService(AbilityRepository abilityRepository, CharacterRepository characterRepository) {
@@ -35,18 +36,17 @@ public class AbilityService {
 
     public Ability updateAbility(Long id, Ability abilityDetails) {
         Ability ability = abilityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ability not found for this id :: " + id));
+                .orElseThrow(() -> new RuntimeException(ABILITY_NOT_FOUND_MESSAGE + id));
 
         ability.setName(abilityDetails.getName());
         ability.setDescription(abilityDetails.getDescription());
 
-        final Ability updatedAbility = abilityRepository.save(ability);
-        return updatedAbility;
+        return abilityRepository.save(ability);
     }
 
     public Ability patchAbility(Long id, Ability abilityDetails) {
         Ability ability = abilityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ability not found for this id :: " + id));
+                .orElseThrow(() -> new RuntimeException(ABILITY_NOT_FOUND_MESSAGE + id));
 
         if (abilityDetails.getName() != null) {
             ability.setName(abilityDetails.getName());
@@ -55,8 +55,7 @@ public class AbilityService {
             ability.setDescription(abilityDetails.getDescription());
         }
 
-        final Ability patchedAbility = abilityRepository.save(ability);
-        return patchedAbility;
+        return abilityRepository.save(ability);
     }
 
     public void deleteAbility(Long id) {
