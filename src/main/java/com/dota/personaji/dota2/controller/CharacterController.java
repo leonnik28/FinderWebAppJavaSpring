@@ -3,6 +3,7 @@ package com.dota.personaji.dota2.controller;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import com.dota.personaji.dota2.model.Ability;
 import com.dota.personaji.dota2.service.DotaCharacterService;
+import com.dota.personaji.dota2.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,6 +58,11 @@ public class CharacterController {
     @GetMapping("/characters/intelligence")
     public List<DotaCharacter> getCharactersByIntelligenceDesc() {
         return characterService.getCharactersByIntelligenceDesc();
+    }
+
+    @GetMapping("/characters/name/{characterName}/roles")
+    public List<Role> getRolesByCharacterName(@PathVariable String characterName) {
+        return characterService.getRolesByCharacterName(characterName);
     }
 
     @PostMapping("/characters/create")

@@ -20,6 +20,12 @@ public class DotaCharacter {
     @JsonBackReference
     private List<Ability> abilities;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "character_role",
+            joinColumns = @JoinColumn(name = "character_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
+
     public Long getId() {
         return id;
     }
@@ -82,5 +88,26 @@ public class DotaCharacter {
         }
         abilities.add(ability);
         ability.setCharacter(this);
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        if (roles == null) {
+            roles = new ArrayList<>();
+        }
+        roles.add(role);
+        role.getCharacters().add(this);
+    }
+
+    public void removeRole(Role role) {
+        roles.remove(role);
+        role.getCharacters().remove(this);
     }
 }

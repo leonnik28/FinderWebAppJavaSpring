@@ -4,6 +4,7 @@ import com.dota.personaji.dota2.dao.CharacterRepository;
 import com.dota.personaji.dota2.dao.AbilityRepository;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import com.dota.personaji.dota2.model.Ability;
+import com.dota.personaji.dota2.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,11 @@ public class DotaCharacterService {
 
     public List<DotaCharacter> getCharactersByIntelligenceDesc() {
         return characterRepository.findAllByOrderByIntelligenceDesc();
+    }
+
+    public List<Role> getRolesByCharacterName(String name) {
+        DotaCharacter character = characterRepository.findByName(name).get(0);
+        return character.getRoles();
     }
 
     public void saveCharacter(DotaCharacter dotaCharacter) {
