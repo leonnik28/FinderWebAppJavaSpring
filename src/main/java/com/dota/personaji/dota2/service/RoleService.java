@@ -1,6 +1,5 @@
 package com.dota.personaji.dota2.service;
 
-import com.dota.personaji.dota2.dao.CharacterRepository;
 import com.dota.personaji.dota2.dao.RoleRepository;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import com.dota.personaji.dota2.model.Role;
