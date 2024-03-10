@@ -1,7 +1,6 @@
 package com.dota.personaji.dota2.controller;
 
 import com.dota.personaji.dota2.model.DotaCharacter;
-import com.dota.personaji.dota2.dto.DotaCharacterDTO;
 import com.dota.personaji.dota2.service.DotaCharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -50,18 +49,18 @@ public class CharacterController {
     }
 
     @PostMapping("/characters/create")
-    public DotaCharacter saveCharacter(@RequestBody DotaCharacterDTO dotaCharacterDTO) {
-        return characterService.saveCharacter(dotaCharacterDTO);
+    public DotaCharacter saveCharacter(@RequestBody DotaCharacter dotaCharacter, @RequestParam List<Long> abilityIds) {
+        return characterService.saveCharacter(dotaCharacter, abilityIds);
     }
 
     @PutMapping("/characters/update/{id}")
-    public DotaCharacter updateCharacter(@PathVariable Long id, @RequestBody DotaCharacterDTO dotaCharacterDTO) {
-        return characterService.updateCharacter(id, dotaCharacterDTO);
+    public DotaCharacter updateCharacter(@PathVariable Long id, @RequestBody DotaCharacter dotaCharacter, @RequestParam List<Long> abilityIds) {
+        return characterService.updateCharacter(id, dotaCharacter, abilityIds);
     }
 
     @PatchMapping("/characters/patch/{id}")
-    public DotaCharacter patchCharacter(@PathVariable Long id, @RequestBody DotaCharacterDTO dotaCharacterDTO) {
-        return characterService.patchCharacter(id, dotaCharacterDTO);
+    public DotaCharacter patchCharacter(@PathVariable Long id, @RequestBody DotaCharacter dotaCharacter, @RequestParam(required = false) List<Long> abilityIds) {
+        return characterService.patchCharacter(id, dotaCharacter, abilityIds);
     }
 
     @DeleteMapping("/characters/delete/{id}")

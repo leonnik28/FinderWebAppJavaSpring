@@ -4,7 +4,6 @@ import com.dota.personaji.dota2.dao.CharacterRepository;
 import com.dota.personaji.dota2.dao.AbilityRepository;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import com.dota.personaji.dota2.model.Ability;
-import com.dota.personaji.dota2.dto.DotaCharacterDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,21 +48,14 @@ public class DotaCharacterService {
         return characterRepository.findAllByOrderByIntelligenceDesc();
     }
 
-    public DotaCharacter saveCharacter(DotaCharacterDTO dotaCharacterDTO) {
-        DotaCharacter dotaCharacter = new DotaCharacter();
-        dotaCharacter.setName(dotaCharacterDTO.getName());
-        dotaCharacter.setPower(dotaCharacterDTO.getPower());
-        dotaCharacter.setAgility(dotaCharacterDTO.getAgility());
-        dotaCharacter.setIntelligence(dotaCharacterDTO.getIntelligence());
-        dotaCharacter.setAttackType(dotaCharacterDTO.getAttackType());
-
-        List<Ability> abilities = abilityRepository.findAllById(dotaCharacterDTO.getAbilityIds());
+    public DotaCharacter saveCharacter(DotaCharacter dotaCharacter, List<Long> abilityIds) {
+        List<Ability> abilities = abilityRepository.findAllById(abilityIds);
         dotaCharacter.setAbilities(abilities);
 
         return characterRepository.save(dotaCharacter);
     }
 
-    public DotaCharacter updateCharacter(Long id, DotaCharacterDTO characterDetails) {
+    public DotaCharacter updateCharacter(Long id, DotaCharacter characterDetails, List<Long> abilityIds) {
         DotaCharacter character = characterRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE + id));
 
@@ -73,38 +65,39 @@ public class DotaCharacterService {
         character.setIntelligence(characterDetails.getIntelligence());
         character.setAttackType(characterDetails.getAttackType());
 
-        List<Ability> abilities = abilityRepository.findAllById(characterDetails.getAbilityIds());
+        List<Ability> abilities = abilityRepository.findAllById(abilityIds);
         character.setAbilities(abilities);
 
         return characterRepository.save(character);
     }
 
-    public DotaCharacter patchCharacter(Long id, DotaCharacterDTO characterDetails) {
+    public DotaCharacter patchCharacter(Long id, DotaCharacter characterDetails, List<Long> abilityIds) {
         DotaCharacter character = characterRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE + id));
 
         if (characterDetails.getName() != null) {
             character.setName(characterDetails.getName());
         }
-        if (characterDetails.getPower() != character.getPower()) {
+        if (characterDetails.getPower() != 0) {
             character.setPower(characterDetails.getPower());
         }
-        if (characterDetails.getAgility() != character.getAgility()) {
+        if (characterDetails.getAgility() != 0) {
             character.setAgility(characterDetails.getAgility());
         }
-        if (characterDetails.getIntelligence() != character.getIntelligence()) {
+        if (characterDetails.getIntelligence() != 0) {
             character.setIntelligence(characterDetails.getIntelligence());
         }
         if (characterDetails.getAttackType() != null) {
             character.setAttackType(characterDetails.getAttackType());
         }
-        if (characterDetails.getAbilityIds() != null) {
-            List<Ability> abilities = abilityRepository.findAllById(characterDetails.getAbilityIds());
+        if (abilityIds != null) {
+            List<Ability> abilities = abilityRepository.findAllById(abilityIds);
             character.setAbilities(abilities);
         }
 
         return characterRepository.save(character);
     }
+
 
     public void deleteCharacter(Long id) {
         characterRepository.deleteById(id);
