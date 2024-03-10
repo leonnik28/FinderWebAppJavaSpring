@@ -1,9 +1,8 @@
 package com.dota.personaji.dota2.controller;
 
 import com.dota.personaji.dota2.model.DotaCharacter;
-import com.dota.personaji.dota2.model.Ability;
+import com.dota.personaji.dota2.dto.DotaCharacterDTO;
 import com.dota.personaji.dota2.service.DotaCharacterService;
-import com.dota.personaji.dota2.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,16 +34,6 @@ public class CharacterController {
         return characterService.getCharacterByName(name);
     }
 
-    @GetMapping("/characters/{id}/abilities")
-    public List<Ability> getAbilitiesByCharacterId(@PathVariable Long id) {
-        return characterService.getAbilitiesByCharacterId(id);
-    }
-
-    @GetMapping("/characters/name/{characterName}/abilities")
-    public List<Ability> getAbilitiesByCharacterName(@PathVariable String characterName) {
-        return characterService.getAbilitiesByCharacterName(characterName);
-    }
-
     @GetMapping("/characters/power")
     public List<DotaCharacter> getCharactersByPowerDesc() {
         return characterService.getCharactersByPowerDesc();
@@ -60,30 +49,19 @@ public class CharacterController {
         return characterService.getCharactersByIntelligenceDesc();
     }
 
-    @GetMapping("/characters/name/{characterName}/roles")
-    public List<Role> getRolesByCharacterName(@PathVariable String characterName) {
-        return characterService.getRolesByCharacterName(characterName);
-    }
-
     @PostMapping("/characters/create")
-    public DotaCharacter saveCharacter(@RequestBody DotaCharacter dotaCharacter) {
-        characterService.saveCharacter(dotaCharacter);
-        return dotaCharacter;
-    }
-
-    @PutMapping("/characters/{characterId}/add/{abilityId}")
-    public DotaCharacter addAbilityToCharacter(@PathVariable Long abilityId, @PathVariable Long characterId) {
-        return characterService.addAbilityToCharacter(characterId, abilityId);
+    public DotaCharacter saveCharacter(@RequestBody DotaCharacterDTO dotaCharacterDTO) {
+        return characterService.saveCharacter(dotaCharacterDTO);
     }
 
     @PutMapping("/characters/update/{id}")
-    public DotaCharacter updateCharacter(@PathVariable Long id, @RequestBody DotaCharacter dotaCharacter) {
-        return characterService.updateCharacter(id, dotaCharacter);
+    public DotaCharacter updateCharacter(@PathVariable Long id, @RequestBody DotaCharacterDTO dotaCharacterDTO) {
+        return characterService.updateCharacter(id, dotaCharacterDTO);
     }
 
     @PatchMapping("/characters/patch/{id}")
-    public DotaCharacter patchCharacter(@PathVariable Long id, @RequestBody DotaCharacter dotaCharacter) {
-        return characterService.patchCharacter(id, dotaCharacter);
+    public DotaCharacter patchCharacter(@PathVariable Long id, @RequestBody DotaCharacterDTO dotaCharacterDTO) {
+        return characterService.patchCharacter(id, dotaCharacterDTO);
     }
 
     @DeleteMapping("/characters/delete/{id}")

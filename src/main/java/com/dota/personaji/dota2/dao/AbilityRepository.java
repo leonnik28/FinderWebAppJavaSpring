@@ -9,6 +9,4 @@ import java.util.List;
 @Repository
 public interface AbilityRepository extends JpaRepository<Ability, Long> {
     List<Ability> findAllByOrderByNameDesc();
-    List<Ability> findByCharacterId(Long characterId);
-    List<Ability> findByCharacterName(String name);
 }

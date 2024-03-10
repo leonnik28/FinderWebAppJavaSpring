@@ -1,8 +1,6 @@
 package com.dota.personaji.dota2.model;
 
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Table(name = "dotacharacters")
@@ -15,16 +13,11 @@ public class DotaCharacter {
     private int power;
     private int agility;
     private int intelligence;
-    private String attacktype;
-    @OneToMany(mappedBy = "character", cascade = CascadeType.ALL)
-    @JsonBackReference
-    private List<Ability> abilities;
+    private String attackType;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "character_role",
-            joinColumns = @JoinColumn(name = "character_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "character_id")
+    private List<Ability> abilities;
 
     public Long getId() {
         return id;
@@ -66,12 +59,12 @@ public class DotaCharacter {
         this.intelligence = intelligence;
     }
 
-    public String getAttacktype() {
-        return attacktype;
+    public String getAttackType() {
+        return attackType;
     }
 
-    public void setAttacktype(String appointment) {
-        this.attacktype = appointment;
+    public void setAttackType(String appointment) {
+        this.attackType = appointment;
     }
 
     public List<Ability> getAbilities() {
@@ -82,32 +75,4 @@ public class DotaCharacter {
         this.abilities = abilities;
     }
 
-    public void addAbility(Ability ability) {
-        if (abilities == null) {
-            abilities = new ArrayList<>();
-        }
-        abilities.add(ability);
-        ability.setCharacter(this);
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
-    public void addRole(Role role) {
-        if (roles == null) {
-            roles = new ArrayList<>();
-        }
-        roles.add(role);
-        role.getCharacters().add(this);
-    }
-
-    public void removeRole(Role role) {
-        roles.remove(role);
-        role.getCharacters().remove(this);
-    }
 }

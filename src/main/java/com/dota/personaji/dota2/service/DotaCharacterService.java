@@ -4,7 +4,7 @@ import com.dota.personaji.dota2.dao.CharacterRepository;
 import com.dota.personaji.dota2.dao.AbilityRepository;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import com.dota.personaji.dota2.model.Ability;
-import com.dota.personaji.dota2.model.Role;
+import com.dota.personaji.dota2.dto.DotaCharacterDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,13 +36,6 @@ public class DotaCharacterService {
         return characterRepository.findByName(name);
     }
 
-    public List<Ability> getAbilitiesByCharacterId(Long id) {
-        return abilityRepository.findByCharacterId(id);
-    }
-
-    public List<Ability> getAbilitiesByCharacterName(String name) {
-        return abilityRepository.findByCharacterName(name);
-    }
 
     public List<DotaCharacter> getCharactersByPowerDesc() {
         return characterRepository.findAllByOrderByPowerDesc();
@@ -56,26 +49,21 @@ public class DotaCharacterService {
         return characterRepository.findAllByOrderByIntelligenceDesc();
     }
 
-    public List<Role> getRolesByCharacterName(String name) {
-        DotaCharacter character = characterRepository.findByName(name).get(0);
-        return character.getRoles();
+    public DotaCharacter saveCharacter(DotaCharacterDTO dotaCharacterDTO) {
+        DotaCharacter dotaCharacter = new DotaCharacter();
+        dotaCharacter.setName(dotaCharacterDTO.getName());
+        dotaCharacter.setPower(dotaCharacterDTO.getPower());
+        dotaCharacter.setAgility(dotaCharacterDTO.getAgility());
+        dotaCharacter.setIntelligence(dotaCharacterDTO.getIntelligence());
+        dotaCharacter.setAttackType(dotaCharacterDTO.getAttackType());
+
+        List<Ability> abilities = abilityRepository.findAllById(dotaCharacterDTO.getAbilityIds());
+        dotaCharacter.setAbilities(abilities);
+
+        return characterRepository.save(dotaCharacter);
     }
 
-    public void saveCharacter(DotaCharacter dotaCharacter) {
-        characterRepository.save(dotaCharacter);
-    }
-
-    public DotaCharacter addAbilityToCharacter(Long characterId, Long abilityId) {
-        DotaCharacter character = characterRepository.findById(characterId)
-                .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE + characterId));
-        Ability ability = abilityRepository.findById(abilityId)
-                .orElseThrow(() -> new RuntimeException("Ability not found for this id :: " + abilityId));
-
-        character.addAbility(ability);
-        return characterRepository.save(character);
-    }
-
-    public DotaCharacter updateCharacter(Long id, DotaCharacter characterDetails) {
+    public DotaCharacter updateCharacter(Long id, DotaCharacterDTO characterDetails) {
         DotaCharacter character = characterRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE + id));
 
@@ -83,20 +71,36 @@ public class DotaCharacterService {
         character.setPower(characterDetails.getPower());
         character.setAgility(characterDetails.getAgility());
         character.setIntelligence(characterDetails.getIntelligence());
-        character.setAttacktype(characterDetails.getAttacktype());
+        character.setAttackType(characterDetails.getAttackType());
+
+        List<Ability> abilities = abilityRepository.findAllById(characterDetails.getAbilityIds());
+        character.setAbilities(abilities);
 
         return characterRepository.save(character);
     }
 
-    public DotaCharacter patchCharacter(Long id, DotaCharacter characterDetails) {
+    public DotaCharacter patchCharacter(Long id, DotaCharacterDTO characterDetails) {
         DotaCharacter character = characterRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE + id));
 
         if (characterDetails.getName() != null) {
             character.setName(characterDetails.getName());
         }
-        if (characterDetails.getAttacktype() != null) {
-            character.setAttacktype(characterDetails.getAttacktype());
+        if (characterDetails.getPower() != character.getPower()) {
+            character.setPower(characterDetails.getPower());
+        }
+        if (characterDetails.getAgility() != character.getAgility()) {
+            character.setAgility(characterDetails.getAgility());
+        }
+        if (characterDetails.getIntelligence() != character.getIntelligence()) {
+            character.setIntelligence(characterDetails.getIntelligence());
+        }
+        if (characterDetails.getAttackType() != null) {
+            character.setAttackType(characterDetails.getAttackType());
+        }
+        if (characterDetails.getAbilityIds() != null) {
+            List<Ability> abilities = abilityRepository.findAllById(characterDetails.getAbilityIds());
+            character.setAbilities(abilities);
         }
 
         return characterRepository.save(character);

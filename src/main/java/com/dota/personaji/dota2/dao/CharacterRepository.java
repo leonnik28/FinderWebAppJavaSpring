@@ -8,7 +8,6 @@ import java.util.List;
 
 @Repository
 public interface CharacterRepository extends JpaRepository<DotaCharacter, Long> {
-    List<DotaCharacter> findAllByOrderByNameDesc();
     List<DotaCharacter> findAllByOrderByPowerDesc();
     List<DotaCharacter> findAllByOrderByAgilityDesc();
     List<DotaCharacter> findAllByOrderByIntelligenceDesc();
