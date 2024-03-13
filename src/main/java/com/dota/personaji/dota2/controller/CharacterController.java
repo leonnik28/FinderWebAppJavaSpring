@@ -63,6 +63,21 @@ public class CharacterController {
         return characterService.patchCharacter(id, dotaCharacter, abilityIds);
     }
 
+    @PatchMapping("/characters/patch/abilities/{id}")
+    public DotaCharacter patchCharacterAbilities(@PathVariable Long id, @RequestParam(required = false) List<Long> abilityIds) {
+        return characterService.addAbilitiesToCharacter(id, abilityIds);
+    }
+
+    @DeleteMapping("/characters/delete/abilities/{id}")
+    public DotaCharacter removeAbilitiesFromCharacter(@PathVariable Long id, @RequestParam List<Long> abilityIds) {
+        return characterService.removeAbilitiesFromCharacter(id, abilityIds);
+    }
+
+    @GetMapping("/characters/strong/{power}")
+    public List<DotaCharacter> getStrongCharacters(@PathVariable int power) {
+        return characterService.getStrongCharacters(power);
+    }
+
     @DeleteMapping("/characters/delete/{id}")
     public String deleteCharacter(@PathVariable Long id) {
         characterService.deleteCharacter(id);
