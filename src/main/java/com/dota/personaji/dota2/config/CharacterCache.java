@@ -34,8 +34,7 @@ public class CharacterCache {
     }
 
     public List<DotaCharacter> getAllCharacters() {
-        List<DotaCharacter> allCharacterCache = new ArrayList<>(cache.values());
-        return allCharacterCache;
+        return new ArrayList<>(cache.values());
     }
 
     public void putAllCharacters(List<DotaCharacter> characters) {
