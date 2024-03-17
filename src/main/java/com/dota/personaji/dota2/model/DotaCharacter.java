@@ -2,6 +2,7 @@ package com.dota.personaji.dota2.model;
 
 import jakarta.persistence.*;
 import java.util.List;
+
 @Entity
 @Table(name = "dotacharacters")
 public class DotaCharacter {

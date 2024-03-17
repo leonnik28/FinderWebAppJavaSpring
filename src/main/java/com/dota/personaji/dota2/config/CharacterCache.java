@@ -29,10 +29,6 @@ public class CharacterCache {
         cache.remove(id);
     }
 
-    public void clear() {
-        cache.clear();
-    }
-
     public List<DotaCharacter> getAllCharacters() {
         return new ArrayList<>(cache.values());
     }

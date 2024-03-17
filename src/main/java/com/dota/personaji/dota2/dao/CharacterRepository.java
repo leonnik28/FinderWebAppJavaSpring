@@ -16,8 +16,6 @@ public interface CharacterRepository extends JpaRepository<DotaCharacter, Long> 
     List<DotaCharacter> findAllByOrderByIntelligenceDesc();
     List<DotaCharacter> findByName(String name);
 
-    @Query("SELECT c FROM DotaCharacter c WHERE c.power > :power")
+    @Query(value = "SELECT * FROM dotacharacters c WHERE c.power > :power", nativeQuery = true)
     List<DotaCharacter> findStrongCharacters(@Param("power") int power);
-
-
 }
