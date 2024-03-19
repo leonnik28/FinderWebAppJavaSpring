@@ -39,7 +39,7 @@ public class CharacterController {
     }
 
     @GetMapping("/characters")
-    public List<DotaCharacter> getAllCharacters() throws Exception {
+    public List<DotaCharacter> getAllCharacters() throws EntityNotFoundException {
         logAttempt("get all characters");
         List<DotaCharacter> characters = checkEntity(characterService.getAllCharacters(), "No characters found");
         logSuccess("retrieved all characters");
@@ -47,7 +47,7 @@ public class CharacterController {
     }
 
     @GetMapping("/characters/{id}")
-    public DotaCharacter getCharacterById(@PathVariable Long id) throws Exception {
+    public DotaCharacter getCharacterById(@PathVariable Long id) throws EntityNotFoundException {
         logAttempt("get character with id: " + id);
         DotaCharacter character = checkEntity(characterService.getCharacterById(id), "Character not found for id: " + id);
         logSuccess("retrieved character with id: " + id);
@@ -55,7 +55,7 @@ public class CharacterController {
     }
 
     @GetMapping("/characters/name/{name}")
-    public List<DotaCharacter> getCharacterByName(@PathVariable String name) throws Exception {
+    public List<DotaCharacter> getCharacterByName(@PathVariable String name) throws EntityNotFoundException {
         logAttempt("get characters with name: " + name);
         List<DotaCharacter> characters = checkEntity(characterService.getCharacterByName(name), "No characters found with name: " + name);
         logSuccess("retrieved characters with name: " + name);
@@ -63,7 +63,7 @@ public class CharacterController {
     }
 
     @GetMapping("/characters/power")
-    public List<DotaCharacter> getCharactersByPowerDesc() throws Exception {
+    public List<DotaCharacter> getCharactersByPowerDesc() throws EntityNotFoundException {
         logAttempt("get characters by power desc");
         List<DotaCharacter> characters = checkEntity(characterService.getCharactersByPowerDesc(), "No characters found");
         logSuccess("retrieved characters by power desc");
@@ -71,7 +71,7 @@ public class CharacterController {
     }
 
     @GetMapping("/characters/agility")
-    public List<DotaCharacter> getCharactersByAgilityDesc() throws Exception {
+    public List<DotaCharacter> getCharactersByAgilityDesc() throws EntityNotFoundException {
         logAttempt("get characters by agility desc");
         List<DotaCharacter> characters = checkEntity(characterService.getCharactersByAgilityDesc(), "No characters found");
         logSuccess("retrieved characters by agility desc");
@@ -79,7 +79,7 @@ public class CharacterController {
     }
 
     @GetMapping("/characters/intelligence")
-    public List<DotaCharacter> getCharactersByIntelligenceDesc() throws Exception {
+    public List<DotaCharacter> getCharactersByIntelligenceDesc() throws EntityNotFoundException {
         logAttempt("get characters by intelligence desc");
         List<DotaCharacter> characters = checkEntity(characterService.getCharactersByIntelligenceDesc(), "No characters found");
         logSuccess("retrieved characters by intelligence desc");
@@ -87,7 +87,7 @@ public class CharacterController {
     }
 
     @PostMapping("/characters/create")
-    public DotaCharacter saveCharacter(@RequestBody DotaCharacter dotaCharacter, @RequestParam List<Long> abilityIds) throws Exception {
+    public DotaCharacter saveCharacter(@RequestBody DotaCharacter dotaCharacter, @RequestParam List<Long> abilityIds) throws EntityNotFoundException {
         logAttempt("save character");
         DotaCharacter savedCharacter = checkEntity(characterService.saveCharacter(dotaCharacter, abilityIds), "Failed to save character");
         logSuccess("saved character");
@@ -95,7 +95,7 @@ public class CharacterController {
     }
 
     @PutMapping("/characters/update/{id}")
-    public DotaCharacter updateCharacter(@PathVariable Long id, @RequestBody DotaCharacter dotaCharacter, @RequestParam List<Long> abilityIds) throws Exception {
+    public DotaCharacter updateCharacter(@PathVariable Long id, @RequestBody DotaCharacter dotaCharacter, @RequestParam List<Long> abilityIds) throws EntityNotFoundException {
         logAttempt("update character with id: " + id);
         DotaCharacter updatedCharacter = checkEntity(characterService.updateCharacter(id, dotaCharacter, abilityIds), "Failed to update character with id: " + id);
         logSuccess("updated character with id: " + id);
@@ -103,7 +103,7 @@ public class CharacterController {
     }
 
     @PatchMapping("/characters/patch/{id}")
-    public DotaCharacter patchCharacter(@PathVariable Long id, @RequestBody DotaCharacter dotaCharacter, @RequestParam(required = false) List<Long> abilityIds) throws Exception {
+    public DotaCharacter patchCharacter(@PathVariable Long id, @RequestBody DotaCharacter dotaCharacter, @RequestParam(required = false) List<Long> abilityIds) throws EntityNotFoundException {
         logAttempt("patch character with id: " + id);
         DotaCharacter patchedCharacter = checkEntity(characterService.patchCharacter(id, dotaCharacter, abilityIds), "Failed to patch character with id: " + id);
         logSuccess("patched character with id: " + id);
@@ -111,7 +111,7 @@ public class CharacterController {
     }
 
     @DeleteMapping("/characters/delete/abilities/{id}")
-    public DotaCharacter removeAbilitiesFromCharacter(@PathVariable Long id, @RequestParam List<Long> abilityIds) throws Exception {
+    public DotaCharacter removeAbilitiesFromCharacter(@PathVariable Long id, @RequestParam List<Long> abilityIds) throws EntityNotFoundException {
         logAttempt("remove abilities from character with id: " + id);
         DotaCharacter updatedCharacter = checkEntity(characterService.removeAbilitiesFromCharacter(id, abilityIds), "Failed to remove abilities from character with id: " + id);
         logSuccess("removed abilities from character with id: " + id);
@@ -119,7 +119,7 @@ public class CharacterController {
     }
 
     @GetMapping("/characters/strong/{power}")
-    public List<DotaCharacter> getStrongCharacters(@PathVariable int power) throws Exception {
+    public List<DotaCharacter> getStrongCharacters(@PathVariable int power) throws EntityNotFoundException {
         logAttempt("get strong characters with power: " + power);
         List<DotaCharacter> characters = checkEntity(characterService.getStrongCharacters(power), "No characters found with power: " + power);
         logSuccess("retrieved strong characters with power: " + power);
@@ -127,7 +127,7 @@ public class CharacterController {
     }
 
     @DeleteMapping("/characters/delete/{id}")
-    public String deleteCharacter(@PathVariable Long id) throws Exception {
+    public String deleteCharacter(@PathVariable Long id) throws EntityNotFoundException {
         logAttempt("delete character with id: " + id);
         characterService.deleteCharacter(id);
         logSuccess("deleted character with id: " + id);
