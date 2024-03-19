@@ -1,5 +1,6 @@
 package com.dota.personaji.dota2.controller;
 
+import com.dota.personaji.dota2.controller.exeption.EntityNotFoundException;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import com.dota.personaji.dota2.service.DotaCharacterService;
 import org.slf4j.Logger;
@@ -30,9 +31,9 @@ public class CharacterController {
     }
 
 
-    private <T> T checkEntity(T entity, String errorMessage) throws Exception {
+    private <T> T checkEntity(T entity, String errorMessage) throws EntityNotFoundException {
         if (entity == null) {
-            throw new Exception(errorMessage);
+            throw new EntityNotFoundException(errorMessage);
         }
         return entity;
     }
