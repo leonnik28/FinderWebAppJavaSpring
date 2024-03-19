@@ -122,9 +122,12 @@ public class CharacterController {
     }
 
     @GetMapping("/characters/strong/{power}")
-    public List<DotaCharacter> getStrongCharacters(@PathVariable int power) throws EntityNotFoundException {
+    public List<DotaCharacter> getStrongCharacters(@PathVariable int power) {
         logAttempt("get strong characters with power: " + power);
-        List<DotaCharacter> characters = checkEntity(characterService.getStrongCharacters(power), "No characters found with power: " + power);
+        List<DotaCharacter> characters = characterService.getStrongCharacters(power);
+        if (characters.isEmpty()) {
+            throw new EntityNotFoundException(NO_CHARACTERS_FOUND + " with power: " + power);
+        }
         logSuccess("retrieved strong characters with power: " + power);
         return characters;
     }
