@@ -22,12 +22,13 @@ public class CharacterController {
     }
 
     private void logAttempt(String action) {
-        logger.info("Attempting to " + action);
+        logger.info("Attempting to {}", action);
     }
 
     private void logSuccess(String action) {
-        logger.info("Successfully " + action);
+        logger.info("Successfully {}", action);
     }
+
 
     private <T> T checkEntity(T entity, String errorMessage) throws Exception {
         if (entity == null) {
