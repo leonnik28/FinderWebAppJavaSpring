@@ -2,6 +2,8 @@ package com.dota.personaji.dota2.controller;
 
 import com.dota.personaji.dota2.model.DotaCharacter;
 import com.dota.personaji.dota2.service.DotaCharacterService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.List;
 public class CharacterController {
 
     private final DotaCharacterService characterService;
+    private static final Logger logger = LoggerFactory.getLogger(CharacterController.class);
 
     @Autowired
     public CharacterController(DotaCharacterService characterService) {
@@ -21,120 +24,157 @@ public class CharacterController {
     }
 
     @GetMapping("/characters")
-    public ResponseEntity<Object> getAllCharacters() {
+    public List<DotaCharacter> getAllCharacters()
+            throws Exception {
+        logger.info("Attempting to get all characters");
         List<DotaCharacter> characters = characterService.getAllCharacters();
         if (characters.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No characters found");
+            throw new Exception("No characters found");
         }
-        return ResponseEntity.ok(characters);
+        logger.info("Successfully retrieved all characters");
+        return characters;
     }
 
     @GetMapping("/characters/{id}")
-    public ResponseEntity<Object> getCharacterById(@PathVariable Long id) {
+    public DotaCharacter getCharacterById(@PathVariable Long id)
+            throws Exception {
+        logger.info("Attempting to get character with id: " + id);
         DotaCharacter character = characterService.getCharacterById(id);
         if (character == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Character not found for id: " + id);
+            throw new Exception("Character not found for id: " + id);
         }
-        return ResponseEntity.ok(character);
+        logger.info("Successfully retrieved character with id: " + id);
+        return character;
     }
 
     @GetMapping("/characters/name/{name}")
-    public ResponseEntity<Object> getCharacterByName(@PathVariable String name) {
+    public List<DotaCharacter> getCharacterByName(@PathVariable String name)
+            throws Exception {
+        logger.info("Attempting to get characters with name: " + name);
         List<DotaCharacter> characters = characterService.getCharacterByName(name);
         if (characters.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No characters found with name: " + name);
+            throw new Exception("No characters found with name: " + name);
         }
-        return ResponseEntity.ok(characters);
+        logger.info("Successfully retrieved characters with name: " + name);
+        return characters;
     }
 
     @GetMapping("/characters/power")
-    public ResponseEntity<Object> getCharactersByPowerDesc() {
+    public List<DotaCharacter> getCharactersByPowerDesc()
+            throws Exception {
+        logger.info("Attempting to get characters by power desc");
         List<DotaCharacter> characters = characterService.getCharactersByPowerDesc();
         if (characters.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No characters found");
+            throw new Exception("No characters found");
         }
-        return ResponseEntity.ok(characters);
+        logger.info("Successfully retrieved characters by power desc");
+        return characters;
     }
 
     @GetMapping("/characters/agility")
-    public ResponseEntity<Object> getCharactersByAgilityDesc() {
+    public List<DotaCharacter> getCharactersByAgilityDesc()
+            throws Exception {
+        logger.info("Attempting to get characters by agility desc");
         List<DotaCharacter> characters = characterService.getCharactersByAgilityDesc();
         if (characters.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No characters found");
+            throw new Exception("No characters found");
         }
-        return ResponseEntity.ok(characters);
+        logger.info("Successfully retrieved characters by agility desc");
+        return characters;
     }
 
     @GetMapping("/characters/intelligence")
-    public ResponseEntity<Object> getCharactersByIntelligenceDesc() {
+    public List<DotaCharacter> getCharactersByIntelligenceDesc()
+            throws Exception {
+        logger.info("Attempting to get characters by intelligence desc");
         List<DotaCharacter> characters = characterService.getCharactersByIntelligenceDesc();
         if (characters.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No characters found");
+            throw new Exception("No characters found");
         }
-        return ResponseEntity.ok(characters);
+        logger.info("Successfully retrieved characters by intelligence desc");
+        return characters;
     }
 
     @PostMapping("/characters/create")
-    public ResponseEntity<Object> saveCharacter(@RequestBody DotaCharacter dotaCharacter, @RequestParam List<Long> abilityIds) {
+    public DotaCharacter saveCharacter(@RequestBody DotaCharacter dotaCharacter, @RequestParam List<Long> abilityIds)
+            throws Exception {
+        logger.info("Attempting to save character");
         DotaCharacter savedCharacter = characterService.saveCharacter(dotaCharacter, abilityIds);
         if (savedCharacter == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to save character");
+            throw new Exception("Failed to save character");
         }
-        return ResponseEntity.ok(savedCharacter);
+        logger.info("Successfully saved character");
+        return savedCharacter;
     }
 
     @PutMapping("/characters/update/{id}")
-    public ResponseEntity<Object> updateCharacter(@PathVariable Long id, @RequestBody DotaCharacter dotaCharacter, @RequestParam List<Long> abilityIds) {
+    public DotaCharacter updateCharacter(@PathVariable Long id, @RequestBody DotaCharacter dotaCharacter, @RequestParam List<Long> abilityIds)
+            throws Exception {
+        logger.info("Attempting to update character with id: " + id);
         DotaCharacter updatedCharacter = characterService.updateCharacter(id, dotaCharacter, abilityIds);
         if (updatedCharacter == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update character with id: " + id);
+            throw new Exception("Failed to update character with id: " + id);
         }
-        return ResponseEntity.ok(updatedCharacter);
+        logger.info("Successfully updated character with id: " + id);
+        return updatedCharacter;
     }
 
     @PatchMapping("/characters/patch/{id}")
-    public ResponseEntity<Object> patchCharacter(@PathVariable Long id, @RequestBody DotaCharacter dotaCharacter, @RequestParam(required = false) List<Long> abilityIds) {
+    public DotaCharacter patchCharacter(@PathVariable Long id, @RequestBody DotaCharacter dotaCharacter, @RequestParam(required = false) List<Long> abilityIds)
+            throws Exception {
+        logger.info("Attempting to patch character with id: " + id);
         DotaCharacter patchedCharacter = characterService.patchCharacter(id, dotaCharacter, abilityIds);
         if (patchedCharacter == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to patch character with id: " + id);
+            throw new Exception("Failed to patch character with id: " + id);
         }
-        return ResponseEntity.ok(patchedCharacter);
+        logger.info("Successfully patched character with id: " + id);
+        return patchedCharacter;
     }
 
     @PatchMapping("/characters/patch/abilities/{id}")
-    public ResponseEntity<Object> patchCharacterAbilities(@PathVariable Long id, @RequestParam(required = false) List<Long> abilityIds) {
+    public DotaCharacter patchCharacterAbilities(@PathVariable Long id, @RequestParam(required = false) List<Long> abilityIds) throws Exception {
+        logger.info("Attempting to patch abilities for character with id: " + id);
+        if (abilityIds == null) {
+            throw new Exception("Ability IDs must not be null");
+        }
         DotaCharacter patchedCharacter = characterService.addAbilitiesToCharacter(id, abilityIds);
         if (patchedCharacter == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to patch abilities for character with id: " + id);
+            throw new Exception("Failed to patch abilities for character with id: " + id);
         }
-        return ResponseEntity.ok(patchedCharacter);
+        logger.info("Successfully patched abilities for character with id: " + id);
+        return patchedCharacter;
     }
 
     @DeleteMapping("/characters/delete/abilities/{id}")
-    public ResponseEntity<Object> removeAbilitiesFromCharacter(@PathVariable Long id, @RequestParam List<Long> abilityIds) {
+    public DotaCharacter removeAbilitiesFromCharacter(@PathVariable Long id, @RequestParam List<Long> abilityIds)
+            throws Exception {
+        logger.info("Attempting to remove abilities from character with id: " + id);
         DotaCharacter updatedCharacter = characterService.removeAbilitiesFromCharacter(id, abilityIds);
         if (updatedCharacter == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to remove abilities from character with id: " + id);
+            throw new Exception("Failed to remove abilities from character with id: " + id);
         }
-        return ResponseEntity.ok(updatedCharacter);
+        logger.info("Successfully removed abilities from character with id: " + id);
+        return updatedCharacter;
     }
 
     @GetMapping("/characters/strong/{power}")
-    public ResponseEntity<Object> getStrongCharacters(@PathVariable int power) {
+    public List<DotaCharacter> getStrongCharacters(@PathVariable int power)
+            throws Exception {
+        logger.info("Attempting to get strong characters with power: " + power);
         List<DotaCharacter> characters = characterService.getStrongCharacters(power);
         if (characters.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No characters found with power: " + power);
+            throw new Exception("No characters found with power: " + power);
         }
-        return ResponseEntity.ok(characters);
+        logger.info("Successfully retrieved strong characters with power: " + power);
+        return characters;
     }
 
     @DeleteMapping("/characters/delete/{id}")
-    public ResponseEntity<String> deleteCharacter(@PathVariable Long id) {
-        try {
-            characterService.deleteCharacter(id);
-            return ResponseEntity.ok("Deleted character id - " + id);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to delete character with id: " + id);
-        }
+    public String deleteCharacter(@PathVariable Long id)
+            throws Exception {
+        logger.info("Attempting to delete character with id: " + id);
+        characterService.deleteCharacter(id);
+        logger.info("Successfully deleted character with id: " + id);
+        return "Deleted character id - " + id;
     }
 }

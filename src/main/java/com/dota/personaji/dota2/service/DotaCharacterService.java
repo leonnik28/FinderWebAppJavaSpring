@@ -60,7 +60,6 @@ public class DotaCharacterService {
         return characterRepository.findByName(name);
     }
 
-
     public List<DotaCharacter> getCharactersByPowerDesc() {
         return characterRepository.findAllByOrderByPowerDesc();
     }
