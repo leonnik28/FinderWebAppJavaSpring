@@ -12,13 +12,7 @@ public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<Object> handleException(Exception e) {
-        logger.error("Exception occurred: ", e);
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(value = {IllegalArgumentException.class})
+    @ExceptionHandler(value = {IllegalArgumentException.class, EntityNotFoundException.class})
     public ResponseEntity<Object> handleBadRequest(Exception e) {
         logger.error("Bad request: ", e);
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
