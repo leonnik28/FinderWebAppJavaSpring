@@ -17,6 +17,9 @@ public class CharacterController {
     private final DotaCharacterService characterService;
     private static final Logger logger = LoggerFactory.getLogger(CharacterController.class);
 
+
+    private static final String NO_CHARACTERS_FOUND = "No characters found";
+
     @Autowired
     public CharacterController(DotaCharacterService characterService) {
         this.characterService = characterService;
@@ -41,7 +44,7 @@ public class CharacterController {
     @GetMapping("/characters")
     public List<DotaCharacter> getAllCharacters() throws EntityNotFoundException {
         logAttempt("get all characters");
-        List<DotaCharacter> characters = checkEntity(characterService.getAllCharacters(), "No characters found");
+        List<DotaCharacter> characters = checkEntity(characterService.getAllCharacters(), NO_CHARACTERS_FOUND);
         logSuccess("retrieved all characters");
         return characters;
     }
@@ -57,7 +60,7 @@ public class CharacterController {
     @GetMapping("/characters/name/{name}")
     public List<DotaCharacter> getCharacterByName(@PathVariable String name) throws EntityNotFoundException {
         logAttempt("get characters with name: " + name);
-        List<DotaCharacter> characters = checkEntity(characterService.getCharacterByName(name), "No characters found with name: " + name);
+        List<DotaCharacter> characters = checkEntity(characterService.getCharacterByName(name), NO_CHARACTERS_FOUND + " with name: " + name);
         logSuccess("retrieved characters with name: " + name);
         return characters;
     }
@@ -65,7 +68,7 @@ public class CharacterController {
     @GetMapping("/characters/power")
     public List<DotaCharacter> getCharactersByPowerDesc() throws EntityNotFoundException {
         logAttempt("get characters by power desc");
-        List<DotaCharacter> characters = checkEntity(characterService.getCharactersByPowerDesc(), "No characters found");
+        List<DotaCharacter> characters = checkEntity(characterService.getCharactersByPowerDesc(), NO_CHARACTERS_FOUND);
         logSuccess("retrieved characters by power desc");
         return characters;
     }
@@ -73,7 +76,7 @@ public class CharacterController {
     @GetMapping("/characters/agility")
     public List<DotaCharacter> getCharactersByAgilityDesc() throws EntityNotFoundException {
         logAttempt("get characters by agility desc");
-        List<DotaCharacter> characters = checkEntity(characterService.getCharactersByAgilityDesc(), "No characters found");
+        List<DotaCharacter> characters = checkEntity(characterService.getCharactersByAgilityDesc(), NO_CHARACTERS_FOUND);
         logSuccess("retrieved characters by agility desc");
         return characters;
     }
@@ -81,7 +84,7 @@ public class CharacterController {
     @GetMapping("/characters/intelligence")
     public List<DotaCharacter> getCharactersByIntelligenceDesc() throws EntityNotFoundException {
         logAttempt("get characters by intelligence desc");
-        List<DotaCharacter> characters = checkEntity(characterService.getCharactersByIntelligenceDesc(), "No characters found");
+        List<DotaCharacter> characters = checkEntity(characterService.getCharactersByIntelligenceDesc(), NO_CHARACTERS_FOUND);
         logSuccess("retrieved characters by intelligence desc");
         return characters;
     }
