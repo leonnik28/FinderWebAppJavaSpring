@@ -1,16 +1,15 @@
 package com.dota.personaji.dota2.service;
 
-import com.dota.personaji.dota2.dao.CharacterRepository;
-import com.dota.personaji.dota2.dao.AbilityRepository;
-import com.dota.personaji.dota2.model.DotaCharacter;
-import com.dota.personaji.dota2.model.Ability;
 import com.dota.personaji.dota2.config.CharacterCache;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.dota.personaji.dota2.dao.AbilityRepository;
+import com.dota.personaji.dota2.dao.CharacterRepository;
+import com.dota.personaji.dota2.model.Ability;
+import com.dota.personaji.dota2.model.DotaCharacter;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DotaCharacterService {
@@ -21,10 +20,13 @@ public class DotaCharacterService {
     private final AbilityRepository abilityRepository;
     private final CharacterCache cache;
 
-    private static final String CHARACTER_NOT_FOUND_MESSAGE = "Character not found for this id :: ";
+    private static final String CHARACTER_NOT_FOUND_MESSAGE =
+            "Character not found for this id :: ";
 
     @Autowired
-    public DotaCharacterService(CharacterRepository characterRepository, AbilityRepository abilityRepository, CharacterCache cache) {
+    public DotaCharacterService(CharacterRepository characterRepository,
+                                AbilityRepository abilityRepository,
+                                CharacterCache cache) {
         this.characterRepository = characterRepository;
         this.abilityRepository = abilityRepository;
         this.cache = cache;
@@ -57,10 +59,12 @@ public class DotaCharacterService {
     }
 
     public List<DotaCharacter> getCharacterByName(String name) {
+
         return characterRepository.findByName(name);
     }
 
     public List<DotaCharacter> getCharactersByPowerDesc() {
+
         return characterRepository.findAllByOrderByPowerDesc();
     }
 
@@ -80,7 +84,9 @@ public class DotaCharacterService {
         return savedCharacter;
     }
 
-    public DotaCharacter updateCharacter(Long id, DotaCharacter characterDetails, List<Long> abilityIds) {
+    public DotaCharacter updateCharacter(Long id,
+                                         DotaCharacter characterDetails,
+                                         List<Long> abilityIds) {
         DotaCharacter character = characterRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE + id));
 
@@ -96,7 +102,9 @@ public class DotaCharacterService {
         return characterRepository.save(character);
     }
 
-    public DotaCharacter patchCharacter(Long id, DotaCharacter characterDetails, List<Long> abilityIds) {
+    public DotaCharacter patchCharacter(Long id,
+                                        DotaCharacter characterDetails,
+                                        List<Long> abilityIds) {
         DotaCharacter character = characterRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE + id));
 

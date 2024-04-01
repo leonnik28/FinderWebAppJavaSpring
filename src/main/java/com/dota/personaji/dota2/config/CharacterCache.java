@@ -1,12 +1,11 @@
 package com.dota.personaji.dota2.config;
 
 import com.dota.personaji.dota2.model.DotaCharacter;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import org.springframework.stereotype.Component;
 
 @Component
 public class CharacterCache {

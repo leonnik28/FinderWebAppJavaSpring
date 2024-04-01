@@ -23,7 +23,8 @@ public class AbilityController {
     public ResponseEntity<Object> getAbilities() {
         List<Ability> abilities = abilityService.getAllAbilities();
         if (abilities.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No abilities found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No abilities found");
         }
         return ResponseEntity.ok(abilities);
     }
@@ -32,7 +33,8 @@ public class AbilityController {
     public ResponseEntity<Object> getAbility(@PathVariable Long id) {
         Ability ability = abilityService.getAbilityById(id);
         if (ability == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ability not found for id: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Ability not found for id: " + id);
         }
         return ResponseEntity.ok(ability);
     }
@@ -41,25 +43,30 @@ public class AbilityController {
     public ResponseEntity<Object> createAbility(@RequestBody Ability ability) {
         Ability createdAbility = abilityService.saveAbility(ability);
         if (createdAbility == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create ability");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Failed to create ability");
         }
         return ResponseEntity.ok(createdAbility);
     }
 
     @PutMapping("/abilities/update/{id}")
-    public ResponseEntity<Object> updateAbility(@PathVariable Long id, @RequestBody Ability ability) {
+    public ResponseEntity<Object> updateAbility(@PathVariable Long id,
+                                                @RequestBody Ability ability) {
         Ability updatedAbility = abilityService.updateAbility(id, ability);
         if (updatedAbility == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update ability with id: " + id);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Failed to update ability with id: " + id);
         }
         return ResponseEntity.ok(updatedAbility);
     }
 
     @PatchMapping("/abilities/patch/{id}")
-    public ResponseEntity<Object> patchAbility(@PathVariable Long id, @RequestBody Ability ability) {
+    public ResponseEntity<Object> patchAbility(@PathVariable Long id,
+                                               @RequestBody Ability ability) {
         Ability patchedAbility = abilityService.patchAbility(id, ability);
         if (patchedAbility == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to patch ability with id: " + id);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Failed to patch ability with id: " + id);
         }
         return ResponseEntity.ok(patchedAbility);
     }
@@ -70,7 +77,8 @@ public class AbilityController {
             abilityService.deleteAbility(id);
             return ResponseEntity.ok("Deleted ability id - " + id);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to delete ability with id: " + id);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Failed to delete ability with id: " + id);
         }
     }
 }
