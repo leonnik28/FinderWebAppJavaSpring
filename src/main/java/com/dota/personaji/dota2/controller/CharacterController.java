@@ -42,9 +42,8 @@ public class CharacterController {
 
     @GetMapping("/characters")
     public List<DotaCharacter> getAllCharacters() throws EntityNotFoundException {
-        List<DotaCharacter> characters = checkEntity(characterService.getAllCharacters(),
+        return checkEntity(characterService.getAllCharacters(),
                 NO_CHARACTERS_FOUND);
-        return characters;
     }
 
     @GetMapping("/characters/{id}")
