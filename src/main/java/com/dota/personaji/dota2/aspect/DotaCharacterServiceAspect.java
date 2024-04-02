@@ -17,7 +17,6 @@ public class DotaCharacterServiceAspect {
     private static final String CHARACTERS_RETRIEVED_SUCCESSFULLY =
             "Characters retrieved successfully.";
 
-
     @Around("execution"
             + "(* com.dota.personaji.dota2.service.DotaCharacterService.getAllCharacters(..))")
     public Object logGetAllCharacters(ProceedingJoinPoint joinPoint)

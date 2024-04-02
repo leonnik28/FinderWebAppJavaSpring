@@ -3,9 +3,10 @@ package com.dota.personaji.dota2.service;
 import com.dota.personaji.dota2.dao.AbilityRepository;
 import com.dota.personaji.dota2.dao.CharacterRepository;
 import com.dota.personaji.dota2.model.Ability;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AbilityService {
@@ -13,7 +14,8 @@ public class AbilityService {
     private final AbilityRepository abilityRepository;
     private final CharacterRepository characterRepository;
 
-    private static final String ABILITY_NOT_FOUND_MESSAGE = "Ability not found for this id :: ";
+    private static final String ABILITY_NOT_FOUND_MESSAGE =
+            "Ability not found for this id :: ";
 
     @Autowired
     public AbilityService(AbilityRepository abilityRepository,
@@ -36,7 +38,8 @@ public class AbilityService {
 
     public Ability updateAbility(Long id, Ability abilityDetails) {
         Ability ability = abilityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(ABILITY_NOT_FOUND_MESSAGE + id));
+                .orElseThrow(() -> new RuntimeException(ABILITY_NOT_FOUND_MESSAGE
+                        + id));
 
         ability.setName(abilityDetails.getName());
         ability.setDescription(abilityDetails.getDescription());
@@ -46,7 +49,8 @@ public class AbilityService {
 
     public Ability patchAbility(Long id, Ability abilityDetails) {
         Ability ability = abilityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(ABILITY_NOT_FOUND_MESSAGE + id));
+                .orElseThrow(() -> new RuntimeException(ABILITY_NOT_FOUND_MESSAGE
+                        + id));
 
         if (abilityDetails.getName() != null) {
             ability.setName(abilityDetails.getName());

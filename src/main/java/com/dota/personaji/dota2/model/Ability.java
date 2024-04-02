@@ -1,5 +1,6 @@
 package com.dota.personaji.dota2.model;
 
+
 import jakarta.persistence.*;
 
 @Entity
