@@ -3,7 +3,6 @@ package com.dota.personaji.dota2.service;
 import com.dota.personaji.dota2.config.CharacterCache;
 import com.dota.personaji.dota2.dao.AbilityRepository;
 import com.dota.personaji.dota2.dao.CharacterRepository;
-import com.dota.personaji.dota2.exeption.EntityNotFoundException;
 import com.dota.personaji.dota2.model.Ability;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import java.util.List;
