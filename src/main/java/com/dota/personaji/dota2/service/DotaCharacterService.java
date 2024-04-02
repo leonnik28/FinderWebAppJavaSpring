@@ -161,9 +161,6 @@ public class DotaCharacterService {
     }
 
     public String deleteCharacter(Long id) {
-        characterRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException(CHARACTER_NOT_FOUND_MESSAGE + id));
-
         characterRepository.deleteById(id);
         cache.remove(id);
         return "Deleted character id - " + id;
