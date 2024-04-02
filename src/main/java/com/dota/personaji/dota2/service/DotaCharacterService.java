@@ -16,6 +16,10 @@ public class DotaCharacterService {
     private final AbilityRepository abilityRepository;
     private final CharacterCache cache;
 
+    private static final String CHARACTER_NOT_FOUND_MESSAGE =
+            "Character not found for this id :: ";
+
+
     @Autowired
     public DotaCharacterService(CharacterRepository characterRepository,
                                 AbilityRepository abilityRepository,
@@ -75,7 +79,7 @@ public class DotaCharacterService {
                                          DotaCharacter characterDetails,
                                          List<Long> abilityIds) {
         DotaCharacter character = characterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Character not found for this id :: "
+                .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE
                         + id));
 
         character.setName(characterDetails.getName());
@@ -94,7 +98,7 @@ public class DotaCharacterService {
                                         DotaCharacter characterDetails,
                                         List<Long> abilityIds) {
         DotaCharacter character = characterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Character not found for this id :: "
+                .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE
                         + id));
 
         if (characterDetails.getName() != null) {
@@ -122,7 +126,7 @@ public class DotaCharacterService {
 
     public DotaCharacter addAbilitiesToCharacter(Long id, List<Long> abilityIds) {
         DotaCharacter character = characterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Character not found for this id :: "
+                .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE
                         + id));
 
         List<Ability> abilitiesToAdd = abilityRepository.findAllById(abilityIds);
@@ -139,7 +143,7 @@ public class DotaCharacterService {
 
     public DotaCharacter removeAbilitiesFromCharacter(Long id, List<Long> abilityIds) {
         DotaCharacter character = characterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Character not found for this id :: "
+                .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE
                         + id));
 
         List<Ability> existingAbilities = character.getAbilities();

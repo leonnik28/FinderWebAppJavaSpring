@@ -14,13 +14,17 @@ public class DotaCharacterServiceAspect {
     private static final Logger logger =
             LoggerFactory.getLogger(DotaCharacterServiceAspect.class);
 
+    private static final String CHARACTERS_RETRIEVED_SUCCESSFULLY =
+            "Characters retrieved successfully.";
+
+
     @Around("execution"
             + "(* com.dota.personaji.dota2.service.DotaCharacterService.getAllCharacters(..))")
     public Object logGetAllCharacters(ProceedingJoinPoint joinPoint)
             throws Throwable {
         logger.info("Retrieving all characters...");
         Object result = joinPoint.proceed();
-        logger.info("Characters retrieved successfully.");
+        logger.info(CHARACTERS_RETRIEVED_SUCCESSFULLY);
         return result;
     }
 
@@ -34,7 +38,7 @@ public class DotaCharacterServiceAspect {
         if (result == null) {
             logger.info("Character not found for id '{}'.", id);
         } else {
-            logger.info("Character retrieved successfully.");
+            logger.info(CHARACTERS_RETRIEVED_SUCCESSFULLY);
         }
         return result;
     }
@@ -46,7 +50,7 @@ public class DotaCharacterServiceAspect {
         String name = (String) joinPoint.getArgs()[0];
         logger.info("Retrieving character by name '{}'...", name);
         Object result = joinPoint.proceed();
-        logger.info("Character retrieved successfully.");
+        logger.info(CHARACTERS_RETRIEVED_SUCCESSFULLY);
         return result;
     }
 
@@ -57,7 +61,7 @@ public class DotaCharacterServiceAspect {
             throws Throwable {
         logger.info("Retrieving characters by power in descending order...");
         Object result = joinPoint.proceed();
-        logger.info("Characters retrieved successfully.");
+        logger.info(CHARACTERS_RETRIEVED_SUCCESSFULLY);
         return result;
     }
 
@@ -68,7 +72,7 @@ public class DotaCharacterServiceAspect {
             throws Throwable {
         logger.info("Retrieving characters by agility in descending order...");
         Object result = joinPoint.proceed();
-        logger.info("Characters retrieved successfully.");
+        logger.info(CHARACTERS_RETRIEVED_SUCCESSFULLY);
         return result;
     }
 
@@ -79,7 +83,7 @@ public class DotaCharacterServiceAspect {
             throws Throwable {
         logger.info("Retrieving characters by intelligence in descending order...");
         Object result = joinPoint.proceed();
-        logger.info("Characters retrieved successfully.");
+        logger.info(CHARACTERS_RETRIEVED_SUCCESSFULLY);
         return result;
     }
 
@@ -146,7 +150,7 @@ public class DotaCharacterServiceAspect {
         int power = (int) joinPoint.getArgs()[0];
         logger.info("Retrieving strong characters with power greater than '{}'...", power);
         Object result = joinPoint.proceed();
-        logger.info("Characters retrieved successfully.");
+        logger.info(CHARACTERS_RETRIEVED_SUCCESSFULLY);
         return result;
     }
 

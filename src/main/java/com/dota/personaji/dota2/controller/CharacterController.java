@@ -1,6 +1,6 @@
 package com.dota.personaji.dota2.controller;
 
-import com.dota.personaji.dota2.controller.exeption.EntityNotFoundException;
+import com.dota.personaji.dota2.exeption.EntityNotFoundException;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import com.dota.personaji.dota2.service.DotaCharacterService;
 import java.util.List;

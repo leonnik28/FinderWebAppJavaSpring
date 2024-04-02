@@ -1,4 +1,4 @@
-package com.dota.personaji.dota2.controller.exeption;
+package com.dota.personaji.dota2.exeption;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
