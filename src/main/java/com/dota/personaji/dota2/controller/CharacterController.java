@@ -160,11 +160,18 @@ public class CharacterController {
     }
 
     @DeleteMapping("/characters/delete/{id}")
-    public String deleteCharacter(@PathVariable Long id)
-            throws EntityNotFoundException {
+    public String deleteCharacter(@PathVariable Long id) {
         logAttempt("delete character with id: " + id);
+
+        DotaCharacter character = characterService.getCharacterById(id);
+        if (character == null) {
+            throw new EntityNotFoundException("Character not found for this id :: "
+                    + id);
+        }
+
         characterService.deleteCharacter(id);
         logSuccess("deleted character with id: " + id);
         return "Deleted character id - " + id;
     }
+
 }

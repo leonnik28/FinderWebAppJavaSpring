@@ -3,6 +3,7 @@ package com.dota.personaji.dota2.service;
 import com.dota.personaji.dota2.config.CharacterCache;
 import com.dota.personaji.dota2.dao.AbilityRepository;
 import com.dota.personaji.dota2.dao.CharacterRepository;
+import com.dota.personaji.dota2.exeption.EntityNotFoundException;
 import com.dota.personaji.dota2.model.Ability;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import java.util.List;
@@ -160,8 +161,12 @@ public class DotaCharacterService {
     }
 
     public String deleteCharacter(Long id) {
+        characterRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException(CHARACTER_NOT_FOUND_MESSAGE + id));
+
         characterRepository.deleteById(id);
         cache.remove(id);
         return "Deleted character id - " + id;
     }
+
 }
