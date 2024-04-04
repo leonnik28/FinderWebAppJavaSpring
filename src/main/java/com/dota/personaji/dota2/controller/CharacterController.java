@@ -7,7 +7,19 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @RequestMapping("/api")
@@ -174,4 +186,25 @@ public class CharacterController {
         return "Deleted character id - " + id;
     }
 
+    @PostMapping("/characters/bulkCreate")
+    public ResponseEntity<Object> createBulkCharacters(
+            @RequestBody List<DotaCharacter> dotaCharacters) {
+        logAttempt("create multiple characters");
+        List<DotaCharacter> createdCharacters =
+                characterService.createBulkCharacters(dotaCharacters);
+        if (createdCharacters.isEmpty()) {
+            throw new EntityNotFoundException("No characters created");
+        }
+        logSuccess("created multiple characters");
+        return new ResponseEntity<>(createdCharacters, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/characters/bulkDelete")
+    public ResponseEntity<Object> deleteBulkCharacters(
+            @RequestBody List<DotaCharacter> dotaCharacters) {
+        logAttempt("delete multiple characters");
+        characterService.deleteBulkCharacters(dotaCharacters);
+        logSuccess("deleted multiple characters");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

@@ -155,4 +155,12 @@ public class DotaCharacterService {
         return "Deleted character id - " + id;
     }
 
+    public List<DotaCharacter> createBulkCharacters(List<DotaCharacter> dotaCharacters) {
+        return characterRepository.saveAll(dotaCharacters);
+    }
+
+    public void deleteBulkCharacters(List<DotaCharacter> dotaCharacters) {
+        characterRepository.deleteAll(dotaCharacters);
+    }
+
 }
