@@ -6,7 +6,6 @@ import com.dota.personaji.dota2.dao.CharacterRepository;
 import com.dota.personaji.dota2.model.Ability;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,10 +30,15 @@ public class DotaCharacterService {
     }
 
     public List<DotaCharacter> getAllCharacters() {
-        return cache.getAllCharacters().isEmpty() ? characterRepository.findAll().stream()
-                .peek(character -> cache.put(character.getId(), character))
-                .toList() : cache.getAllCharacters();
+        if (cache.getAllCharacters().isEmpty()) {
+            List<DotaCharacter> characters = characterRepository.findAll();
+            characters.forEach(character -> cache.put(character.getId(), character));
+            return characters;
+        } else {
+            return cache.getAllCharacters();
+        }
     }
+
 
     public DotaCharacter getCharacterById(Long id) {
         return cache.contains(id) ? cache.get(id) : characterRepository.findById(id)
