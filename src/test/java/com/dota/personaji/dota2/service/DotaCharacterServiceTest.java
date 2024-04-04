@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class DotaCharacterServiceTest {
+class DotaCharacterServiceTest {
 
     @InjectMocks
     private DotaCharacterService dotaCharacterService;
@@ -34,7 +34,7 @@ public class DotaCharacterServiceTest {
     private CharacterCache cache;
 
     @Test
-    public void testGetAllCharacters() {
+    void testGetAllCharacters() {
         DotaCharacter character1 = new DotaCharacter();
         DotaCharacter character2 = new DotaCharacter();
         when(characterRepository.findAll()).thenReturn(Arrays.asList(character1, character2));
@@ -42,49 +42,49 @@ public class DotaCharacterServiceTest {
     }
 
     @Test
-    public void testGetCharacterById() {
+    void testGetCharacterById() {
         DotaCharacter character = new DotaCharacter();
         when(characterRepository.findById(any())).thenReturn(Optional.of(character));
         assertEquals(character, dotaCharacterService.getCharacterById(1L));
     }
 
     @Test
-    public void testGetCharacterByName() {
+    void testGetCharacterByName() {
         DotaCharacter character = new DotaCharacter();
         when(characterRepository.findByName(any())).thenReturn(Arrays.asList(character));
         assertEquals(1, dotaCharacterService.getCharacterByName("name").size());
     }
 
     @Test
-    public void testGetCharactersByPowerDesc() {
+    void testGetCharactersByPowerDesc() {
         DotaCharacter character = new DotaCharacter();
         when(characterRepository.findAllByOrderByPowerDesc()).thenReturn(Arrays.asList(character));
         assertEquals(1, dotaCharacterService.getCharactersByPowerDesc().size());
     }
 
     @Test
-    public void testGetCharactersByAgilityDesc() {
+    void testGetCharactersByAgilityDesc() {
         DotaCharacter character = new DotaCharacter();
         when(characterRepository.findAllByOrderByAgilityDesc()).thenReturn(Arrays.asList(character));
         assertEquals(1, dotaCharacterService.getCharactersByAgilityDesc().size());
     }
 
     @Test
-    public void testGetCharactersByIntelligenceDesc() {
+    void testGetCharactersByIntelligenceDesc() {
         DotaCharacter character = new DotaCharacter();
         when(characterRepository.findAllByOrderByIntelligenceDesc()).thenReturn(Arrays.asList(character));
         assertEquals(1, dotaCharacterService.getCharactersByIntelligenceDesc().size());
     }
 
     @Test
-    public void testSaveCharacter() {
+    void testSaveCharacter() {
         DotaCharacter character = new DotaCharacter();
         when(characterRepository.save(any(DotaCharacter.class))).thenReturn(character);
         assertEquals(character, dotaCharacterService.saveCharacter(character, Arrays.asList(1L)));
     }
 
     @Test
-    public void testUpdateCharacter() {
+    void testUpdateCharacter() {
         DotaCharacter character = new DotaCharacter();
         DotaCharacter characterDetails = new DotaCharacter();
         when(characterRepository.findById(any())).thenReturn(Optional.of(character));
@@ -94,7 +94,7 @@ public class DotaCharacterServiceTest {
     }
 
     @Test
-    public void testPatchCharacter() {
+    void testPatchCharacter() {
         DotaCharacter character = new DotaCharacter();
         DotaCharacter characterDetails = new DotaCharacter();
         when(characterRepository.findById(any())).thenReturn(Optional.of(character));
@@ -105,7 +105,7 @@ public class DotaCharacterServiceTest {
 
 
     @Test
-    public void testAddAbilitiesToCharacter() {
+    void testAddAbilitiesToCharacter() {
         DotaCharacter character = new DotaCharacter();
         Ability ability = new Ability();
         when(characterRepository.findById(anyLong())).thenReturn(Optional.of(character));
@@ -115,7 +115,7 @@ public class DotaCharacterServiceTest {
     }
 
     @Test
-    public void testRemoveAbilitiesFromCharacter() {
+    void testRemoveAbilitiesFromCharacter() {
         DotaCharacter character = new DotaCharacter();
         Ability ability = new Ability();
         character.setAbilities(Arrays.asList(ability));
@@ -126,20 +126,20 @@ public class DotaCharacterServiceTest {
 
 
     @Test
-    public void testGetStrongCharacters() {
+    void testGetStrongCharacters() {
         DotaCharacter character = new DotaCharacter();
         when(characterRepository.findStrongCharacters(anyInt())).thenReturn(Arrays.asList(character));
         assertEquals(1, dotaCharacterService.getStrongCharacters(100).size());
     }
 
     @Test
-    public void testDeleteCharacter() {
+    void testDeleteCharacter() {
         String expectedMessage = "Deleted character id - 1";
         assertEquals(expectedMessage, dotaCharacterService.deleteCharacter(1L));
     }
 
     @Test
-    public void testCreateBulkCharacters() {
+    void testCreateBulkCharacters() {
         DotaCharacter character1 = new DotaCharacter();
         DotaCharacter character2 = new DotaCharacter();
         List<DotaCharacter> characters = Arrays.asList(character1, character2);
@@ -148,7 +148,7 @@ public class DotaCharacterServiceTest {
     }
 
     @Test
-    public void testDeleteBulkCharacters() {
+    void testDeleteBulkCharacters() {
         DotaCharacter character1 = new DotaCharacter();
         DotaCharacter character2 = new DotaCharacter();
         List<DotaCharacter> characters = Arrays.asList(character1, character2);

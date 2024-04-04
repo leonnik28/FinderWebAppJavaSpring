@@ -18,7 +18,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class AbilityServiceTest {
+class AbilityServiceTest {
 
     @InjectMocks
     private AbilityService abilityService;
@@ -30,28 +30,28 @@ public class AbilityServiceTest {
     private CharacterCache cache;
 
     @Test
-    public void testGetAllAbilities() {
+    void testGetAllAbilities() {
         Ability ability = new Ability();
         when(abilityRepository.findAll()).thenReturn(Arrays.asList(ability));
         assertEquals(1, abilityService.getAllAbilities().size());
     }
 
     @Test
-    public void testGetAbilityById() {
+    void testGetAbilityById() {
         Ability ability = new Ability();
         when(abilityRepository.findById(anyLong())).thenReturn(Optional.of(ability));
         assertEquals(ability, abilityService.getAbilityById(1L));
     }
 
     @Test
-    public void testSaveAbility() {
+    void testSaveAbility() {
         Ability ability = new Ability();
         when(abilityRepository.save(any(Ability.class))).thenReturn(ability);
         assertEquals(ability, abilityService.saveAbility(ability));
     }
 
     @Test
-    public void testUpdateAbility() {
+    void testUpdateAbility() {
         Ability ability = new Ability();
         Ability abilityDetails = new Ability();
         when(abilityRepository.findById(anyLong())).thenReturn(Optional.of(ability));
@@ -60,7 +60,7 @@ public class AbilityServiceTest {
     }
 
     @Test
-    public void testPatchAbility() {
+    void testPatchAbility() {
         Ability ability = new Ability();
         Ability abilityDetails = new Ability();
         when(abilityRepository.findById(anyLong())).thenReturn(Optional.of(ability));
@@ -69,7 +69,7 @@ public class AbilityServiceTest {
     }
 
     @Test
-    public void testDeleteAbility() {
+    void testDeleteAbility() {
         Mockito.doNothing().when(abilityRepository).deleteById(anyLong());
         abilityService.deleteAbility(1L);
         verify(abilityRepository, times(1)).deleteById(anyLong());
