@@ -32,7 +32,8 @@ public class DotaCharacterService {
     public List<DotaCharacter> getAllCharacters() {
         if (cache.getAllCharacters().isEmpty()) {
             List<DotaCharacter> characters = characterRepository.findAll();
-            characters.forEach(character -> cache.put(character.getId(), character));
+            characters.forEach(character -> cache.put(character.getId(),
+                    character));
             return characters;
         } else {
             return cache.getAllCharacters();
