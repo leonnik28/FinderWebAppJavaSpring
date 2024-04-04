@@ -33,7 +33,7 @@ public class DotaCharacterService {
     public List<DotaCharacter> getAllCharacters() {
         return cache.getAllCharacters().isEmpty() ? characterRepository.findAll().stream()
                 .peek(character -> cache.put(character.getId(), character))
-                .collect(Collectors.toList()) : cache.getAllCharacters();
+                .toList() : cache.getAllCharacters();
     }
 
     public DotaCharacter getCharacterById(Long id) {
