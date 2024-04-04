@@ -6,6 +6,7 @@ import com.dota.personaji.dota2.dao.CharacterRepository;
 import com.dota.personaji.dota2.model.Ability;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,25 +31,17 @@ public class DotaCharacterService {
     }
 
     public List<DotaCharacter> getAllCharacters() {
-        if (!cache.getAllCharacters().isEmpty()) {
-            return cache.getAllCharacters();
-        } else {
-            List<DotaCharacter> characters = characterRepository.findAll();
-            cache.putAllCharacters(characters);
-            return characters;
-        }
+        return cache.getAllCharacters().isEmpty() ? characterRepository.findAll().stream()
+                .peek(character -> cache.put(character.getId(), character))
+                .collect(Collectors.toList()) : cache.getAllCharacters();
     }
 
     public DotaCharacter getCharacterById(Long id) {
-        if (cache.contains(id)) {
-            return cache.get(id);
-        } else {
-            DotaCharacter character = characterRepository.findById(id).orElse(null);
-            if (character != null) {
-                cache.put(id, character);
-            }
-            return character;
-        }
+        return cache.contains(id) ? cache.get(id) : characterRepository.findById(id)
+                .map(character -> {
+                    cache.put(id, character);
+                    return character;
+                }).orElse(null);
     }
 
     public List<DotaCharacter> getCharacterByName(String name) {
@@ -68,8 +61,7 @@ public class DotaCharacterService {
     }
 
     public DotaCharacter saveCharacter(DotaCharacter dotaCharacter, List<Long> abilityIds) {
-        List<Ability> abilities = abilityRepository.findAllById(abilityIds);
-        dotaCharacter.setAbilities(abilities);
+        dotaCharacter.setAbilities(abilityRepository.findAllById(abilityIds));
         DotaCharacter savedCharacter = characterRepository.save(dotaCharacter);
         cache.put(savedCharacter.getId(), savedCharacter);
         return savedCharacter;
@@ -78,50 +70,43 @@ public class DotaCharacterService {
     public DotaCharacter updateCharacter(Long id,
                                          DotaCharacter characterDetails,
                                          List<Long> abilityIds) {
-        DotaCharacter character = characterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE
-                        + id));
-
-        character.setName(characterDetails.getName());
-        character.setPower(characterDetails.getPower());
-        character.setAgility(characterDetails.getAgility());
-        character.setIntelligence(characterDetails.getIntelligence());
-        character.setAttackType(characterDetails.getAttackType());
-
-        List<Ability> abilities = abilityRepository.findAllById(abilityIds);
-        character.setAbilities(abilities);
-
-        return characterRepository.save(character);
+        return characterRepository.findById(id)
+                .map(character -> {
+                    character.setName(characterDetails.getName());
+                    character.setPower(characterDetails.getPower());
+                    character.setAgility(characterDetails.getAgility());
+                    character.setIntelligence(characterDetails.getIntelligence());
+                    character.setAttackType(characterDetails.getAttackType());
+                    character.setAbilities(abilityRepository.findAllById(abilityIds));
+                    return characterRepository.save(character);
+                }).orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE + id));
     }
 
     public DotaCharacter patchCharacter(Long id,
                                         DotaCharacter characterDetails,
                                         List<Long> abilityIds) {
-        DotaCharacter character = characterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE
-                        + id));
-
-        if (characterDetails.getName() != null) {
-            character.setName(characterDetails.getName());
-        }
-        if (characterDetails.getPower() != 0) {
-            character.setPower(characterDetails.getPower());
-        }
-        if (characterDetails.getAgility() != 0) {
-            character.setAgility(characterDetails.getAgility());
-        }
-        if (characterDetails.getIntelligence() != 0) {
-            character.setIntelligence(characterDetails.getIntelligence());
-        }
-        if (characterDetails.getAttackType() != null) {
-            character.setAttackType(characterDetails.getAttackType());
-        }
-        if (abilityIds != null) {
-            List<Ability> abilities = abilityRepository.findAllById(abilityIds);
-            character.setAbilities(abilities);
-        }
-
-        return characterRepository.save(character);
+        return characterRepository.findById(id)
+                .map(character -> {
+                    if (characterDetails.getName() != null) {
+                        character.setName(characterDetails.getName());
+                    }
+                    if (characterDetails.getPower() != 0) {
+                        character.setPower(characterDetails.getPower());
+                    }
+                    if (characterDetails.getAgility() != 0) {
+                        character.setAgility(characterDetails.getAgility());
+                    }
+                    if (characterDetails.getIntelligence() != 0) {
+                        character.setIntelligence(characterDetails.getIntelligence());
+                    }
+                    if (characterDetails.getAttackType() != null) {
+                        character.setAttackType(characterDetails.getAttackType());
+                    }
+                    if (abilityIds != null) {
+                        character.setAbilities(abilityRepository.findAllById(abilityIds));
+                    }
+                    return characterRepository.save(character);
+                }).orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE + id));
     }
 
     public DotaCharacter addAbilitiesToCharacter(Long id, List<Long> abilityIds) {

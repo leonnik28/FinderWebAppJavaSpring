@@ -1,27 +1,22 @@
 package com.dota.personaji.dota2.service;
 
 import com.dota.personaji.dota2.dao.AbilityRepository;
-import com.dota.personaji.dota2.dao.CharacterRepository;
 import com.dota.personaji.dota2.model.Ability;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AbilityService {
 
     private final AbilityRepository abilityRepository;
-    private final CharacterRepository characterRepository;
 
     private static final String ABILITY_NOT_FOUND_MESSAGE =
             "Ability not found for this id :: ";
 
     @Autowired
-    public AbilityService(AbilityRepository abilityRepository,
-                          CharacterRepository characterRepository) {
+    public AbilityService(AbilityRepository abilityRepository) {
         this.abilityRepository = abilityRepository;
-        this.characterRepository = characterRepository;
     }
 
     public List<Ability> getAllAbilities() {
@@ -37,29 +32,25 @@ public class AbilityService {
     }
 
     public Ability updateAbility(Long id, Ability abilityDetails) {
-        Ability ability = abilityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(ABILITY_NOT_FOUND_MESSAGE
-                        + id));
-
-        ability.setName(abilityDetails.getName());
-        ability.setDescription(abilityDetails.getDescription());
-
-        return abilityRepository.save(ability);
+        return abilityRepository.findById(id)
+                .map(ability -> {
+                    ability.setName(abilityDetails.getName());
+                    ability.setDescription(abilityDetails.getDescription());
+                    return abilityRepository.save(ability);
+                }).orElseThrow(() -> new RuntimeException(ABILITY_NOT_FOUND_MESSAGE + id));
     }
 
     public Ability patchAbility(Long id, Ability abilityDetails) {
-        Ability ability = abilityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(ABILITY_NOT_FOUND_MESSAGE
-                        + id));
-
-        if (abilityDetails.getName() != null) {
-            ability.setName(abilityDetails.getName());
-        }
-        if (abilityDetails.getDescription() != null) {
-            ability.setDescription(abilityDetails.getDescription());
-        }
-
-        return abilityRepository.save(ability);
+        return abilityRepository.findById(id)
+                .map(ability -> {
+                    if (abilityDetails.getName() != null) {
+                        ability.setName(abilityDetails.getName());
+                    }
+                    if (abilityDetails.getDescription() != null) {
+                        ability.setDescription(abilityDetails.getDescription());
+                    }
+                    return abilityRepository.save(ability);
+                }).orElseThrow(() -> new RuntimeException(ABILITY_NOT_FOUND_MESSAGE + id));
     }
 
     public void deleteAbility(Long id) {
