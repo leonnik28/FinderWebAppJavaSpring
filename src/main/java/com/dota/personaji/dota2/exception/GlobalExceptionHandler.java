@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-    private static final String TIMESTAMP = "timestamp";
+    private static final String STATUS = "status";
     private static final String MESSAGE = "message";
 
     @ExceptionHandler(value = {IllegalArgumentException.class, EntityNotFoundException.class})
@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
         logger.error("Bad request: ", e);
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put(TIMESTAMP, new Date());
+        body.put(STATUS, HttpStatus.BAD_REQUEST);
         body.put(MESSAGE, e.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
         logger.error("Resource not found: ", e);
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put(TIMESTAMP, new Date());
+        body.put(STATUS, HttpStatus.NOT_FOUND);
         body.put(MESSAGE, e.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
         logger.error("Server error: ", e);
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put(TIMESTAMP, new Date());
+        body.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
         body.put(MESSAGE, e.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
