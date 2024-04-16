@@ -1,6 +1,6 @@
 package com.dota.personaji.dota2.controller;
 
-import com.dota.personaji.dota2.exeption.EntityNotFoundException;
+import com.dota.personaji.dota2.exception.EntityNotFoundException;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import com.dota.personaji.dota2.service.DotaCharacterService;
 import java.util.List;
@@ -145,6 +145,18 @@ public class CharacterController {
                 "Failed to patch character with id: " + id);
         logSuccess("patched character with id: " + id);
         return patchedCharacter;
+    }
+
+    @PatchMapping("/characters/add/abilities/{id}")
+    public DotaCharacter addAbilitiesToCharacter(@PathVariable Long id,
+                                                 @RequestParam List<Long> abilityIds)
+            throws EntityNotFoundException {
+        logAttempt("add abilities to character with id: " + id);
+        DotaCharacter updatedCharacter =
+                checkEntity(characterService.addAbilitiesToCharacter(id, abilityIds),
+                        "Failed to add abilities to character with id: " + id);
+        logSuccess("added abilities to character with id: " + id);
+        return updatedCharacter;
     }
 
     @DeleteMapping("/characters/delete/abilities/{id}")

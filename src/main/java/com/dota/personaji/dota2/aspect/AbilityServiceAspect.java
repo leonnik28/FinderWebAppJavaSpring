@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AbilityServiceAspect {
 
-    private static final Logger logger = LoggerFactory.getLogger(AbilityServiceAspect.class);
+    private static Logger logger = LoggerFactory.getLogger(AbilityServiceAspect.class);
 
     @Around("execution"
             + "(* com.dota.personaji.dota2.service.AbilityService.getAllAbilities(..))")

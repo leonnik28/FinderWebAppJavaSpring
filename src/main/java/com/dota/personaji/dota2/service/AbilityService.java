@@ -3,6 +3,8 @@ package com.dota.personaji.dota2.service;
 import com.dota.personaji.dota2.dao.AbilityRepository;
 import com.dota.personaji.dota2.model.Ability;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,8 @@ public class AbilityService {
     }
 
     public Ability getAbilityById(Long id) {
-        return abilityRepository.findById(id).orElse(null);
+        return abilityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(ABILITY_NOT_FOUND_MESSAGE + id));
     }
 
     public Ability saveAbility(Ability ability) {
@@ -43,14 +46,11 @@ public class AbilityService {
     public Ability patchAbility(Long id, Ability abilityDetails) {
         return abilityRepository.findById(id)
                 .map(ability -> {
-                    if (abilityDetails.getName() != null) {
-                        ability.setName(abilityDetails.getName());
-                    }
-                    if (abilityDetails.getDescription() != null) {
-                        ability.setDescription(abilityDetails.getDescription());
-                    }
+                    Optional.ofNullable(abilityDetails.getName()).ifPresent(ability::setName);
+                    Optional.ofNullable(abilityDetails.getDescription()).ifPresent(ability::setDescription);
                     return abilityRepository.save(ability);
-                }).orElseThrow(() -> new RuntimeException(ABILITY_NOT_FOUND_MESSAGE + id));
+                })
+                .orElseThrow(() -> new RuntimeException(ABILITY_NOT_FOUND_MESSAGE + id));
     }
 
     public void deleteAbility(Long id) {

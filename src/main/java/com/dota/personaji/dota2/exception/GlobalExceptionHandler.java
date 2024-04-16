@@ -1,6 +1,5 @@
-package com.dota.personaji.dota2.exeption;
+package com.dota.personaji.dota2.exception;
 
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.slf4j.Logger;

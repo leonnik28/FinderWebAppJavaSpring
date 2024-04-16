@@ -9,12 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CharacterRepository extends JpaRepository<DotaCharacter, Long> {
-    List<DotaCharacter> findAllByOrderByPowerDesc();
-
-    List<DotaCharacter> findAllByOrderByAgilityDesc();
-
-    List<DotaCharacter> findAllByOrderByIntelligenceDesc();
-
     List<DotaCharacter> findByName(String name);
 
     @Query(value = "SELECT * FROM dotacharacters c WHERE c.power > :power", nativeQuery = true)

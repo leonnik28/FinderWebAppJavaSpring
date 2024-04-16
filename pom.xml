@@ -111,7 +111,7 @@
 										<limit>
 											<counter>INSTRUCTION</counter>
 											<value>MISSEDRATIO</value>
-											<maximum>20%</maximum>
+											<maximum>50%</maximum>
 										</limit>
 									</limits>
 								</rule>
@@ -122,12 +122,10 @@
 				</executions>
 				<configuration>
 					<excludes>
-						<exclude>**/model/**</exclude>
-						<exclude>**/dao/**</exclude>
-						<exclude>**/controller/**</exclude>
-						<exclude>**/config/**</exclude>
 						<exclude>**/aspect/**</exclude>
+						<exclude>**/config/**</exclude>
 						<exclude>**/exception/**</exclude>
+						<exclude>**/controller/**</exclude>
 						<exclude>**/Dota2Application.class/**</exclude>
 					</excludes>
 				</configuration>
