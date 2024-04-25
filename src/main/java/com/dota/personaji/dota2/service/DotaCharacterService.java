@@ -19,17 +19,18 @@ public class DotaCharacterService {
     private final CharacterRepository characterRepository;
     private final AbilityRepository abilityRepository;
     private final CharacterCache cache;
-
+    private final RequestCounterService requestCounterService;
     private static final String CHARACTER_NOT_FOUND_MESSAGE =
             "Character not found for this id :: ";
 
     @Autowired
     public DotaCharacterService(CharacterRepository characterRepository,
                                 AbilityRepository abilityRepository,
-                                CharacterCache cache) {
+                                CharacterCache cache, RequestCounterService requestCounterService) {
         this.characterRepository = characterRepository;
         this.abilityRepository = abilityRepository;
         this.cache = cache;
+        this.requestCounterService = requestCounterService;
     }
 
     public List<DotaCharacter> getAllCharacters() {
@@ -159,6 +160,7 @@ public class DotaCharacterService {
     }
 
     public List<DotaCharacter> getStrongCharacters(int power) {
+        requestCounterService.increment();
         return characterRepository.findStrongCharacters(power);
     }
 
@@ -169,11 +171,13 @@ public class DotaCharacterService {
     }
 
     public List<DotaCharacter> createBulkCharacters(List<DotaCharacter> dotaCharacters) {
-        return characterRepository.saveAll(dotaCharacters);
+        List<DotaCharacter> savedCharacters = characterRepository.saveAll(dotaCharacters);
+        savedCharacters.forEach(character -> cache.put(character.getId(), character));
+        return savedCharacters;
     }
 
     public void deleteBulkCharacters(List<DotaCharacter> dotaCharacters) {
         characterRepository.deleteAll(dotaCharacters);
+        dotaCharacters.forEach(character -> cache.remove(character.getId()));
     }
-
 }
