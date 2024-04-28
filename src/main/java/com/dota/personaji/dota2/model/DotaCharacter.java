@@ -22,6 +22,7 @@ public class DotaCharacter {
     private int agility;
     private int intelligence;
     private String attackType;
+    private String picUrl;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "character_id")
@@ -83,4 +84,7 @@ public class DotaCharacter {
         this.abilities = abilities;
     }
 
+    public String getPicUrl(){ return picUrl; }
+
+    public void setPicUrl(String picUrl) { this.picUrl = picUrl; }
 }

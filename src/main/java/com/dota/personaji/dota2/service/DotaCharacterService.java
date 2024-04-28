@@ -78,6 +78,10 @@ public class DotaCharacterService {
                 .toList();
     }
 
+    public DotaCharacter getCharacterByAbility(Ability ability) {
+        return characterRepository.findByAbilitiesContaining(ability);
+    }
+
     public DotaCharacter saveCharacter(DotaCharacter dotaCharacter, List<Long> abilityIds) {
         dotaCharacter.setAbilities(abilityRepository.findAllById(abilityIds));
         DotaCharacter savedCharacter = characterRepository.save(dotaCharacter);
@@ -86,17 +90,19 @@ public class DotaCharacterService {
     }
 
     public DotaCharacter updateCharacter(Long id, DotaCharacter characterDetails, List<Long> abilityIds) {
-        return characterRepository.findById(id)
-                .map(character -> {
-                    character.setName(characterDetails.getName());
-                    character.setPower(characterDetails.getPower());
-                    character.setAgility(characterDetails.getAgility());
-                    character.setIntelligence(characterDetails.getIntelligence());
-                    character.setAttackType(characterDetails.getAttackType());
-                    character.setAbilities(abilityRepository.findAllById(abilityIds));
-                    return characterRepository.save(character);
+        DotaCharacter character = characterRepository.findById(id)
+                .map(c -> {
+                    c.setName(characterDetails.getName());
+                    c.setPower(characterDetails.getPower());
+                    c.setAgility(characterDetails.getAgility());
+                    c.setIntelligence(characterDetails.getIntelligence());
+                    c.setAttackType(characterDetails.getAttackType());
+                    c.setAbilities(abilityRepository.findAllById(abilityIds));
+                    return characterRepository.save(c);
                 })
                 .orElseThrow(() -> new RuntimeException(CHARACTER_NOT_FOUND_MESSAGE + id));
+        cache.put(character.getId(), character);
+        return character;
     }
 
     public DotaCharacter patchCharacter(Long id, DotaCharacter characterDetails, List<Long> abilityIds) {

@@ -30,6 +30,10 @@ public class AbilityService {
                 .orElseThrow(() -> new RuntimeException(ABILITY_NOT_FOUND_MESSAGE + id));
     }
 
+    public Ability getAbilityByName(String name){
+        return abilityRepository.findByName(name);
+    }
+
     public Ability saveAbility(Ability ability) {
         return abilityRepository.save(ability);
     }

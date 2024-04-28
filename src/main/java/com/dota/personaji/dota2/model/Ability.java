@@ -15,6 +15,7 @@ public class Ability {
     private Long id;
     private String name;
     private String description;
+    private String picUrl;
 
     public Long getId() {
         return id;
@@ -39,4 +40,8 @@ public class Ability {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getPicUrl(){ return picUrl; }
+
+    public void setPicUrl(String picUrl) { this.picUrl = picUrl; }
 }

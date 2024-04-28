@@ -3,25 +3,19 @@ package com.dota.personaji.dota2.controller;
 import com.dota.personaji.dota2.exception.EntityNotFoundException;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import com.dota.personaji.dota2.service.DotaCharacterService;
+import com.dota.personaji.dota2.model.Ability;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api")
 public class CharacterController {
 
@@ -67,8 +61,8 @@ public class CharacterController {
         return character;
     }
 
-    @GetMapping("/characters/name/{name}")
-    public List<DotaCharacter> getCharacterByName(@PathVariable String name)
+    @GetMapping("/characters/name")
+    public List<DotaCharacter> getCharacterByName(@RequestParam("name") String name)
             throws EntityNotFoundException {
         logAttempt("get characters with name: " + name);
         List<DotaCharacter> characters = checkEntity(characterService.getCharacterByName(name),
@@ -107,33 +101,37 @@ public class CharacterController {
     }
 
     @PostMapping("/characters/create")
-    public DotaCharacter saveCharacter(@RequestBody DotaCharacter dotaCharacter,
-                                       @RequestParam List<Long> abilityIds)
+    public DotaCharacter saveCharacter(@RequestBody DotaCharacter dotaCharacter)
             throws EntityNotFoundException {
         logAttempt("save character");
+        List<Long> abilityIds = dotaCharacter.getAbilities().stream()
+                .map(Ability::getId)
+                .collect(Collectors.toList());
         DotaCharacter savedCharacter = checkEntity(characterService.saveCharacter(dotaCharacter,
                 abilityIds), "Failed to save character");
         logSuccess("saved character");
         return savedCharacter;
     }
 
-    @PutMapping("/characters/update/{id}")
-    public DotaCharacter updateCharacter(@PathVariable Long id,
-                                         @RequestBody DotaCharacter dotaCharacter,
-                                         @RequestParam List<Long> abilityIds)
+    @PutMapping("/characters/update")
+    public DotaCharacter updateCharacter(@RequestParam("id") Long id,
+                                         @RequestBody DotaCharacter dotaCharacter)
             throws EntityNotFoundException {
         logAttempt("update character with id: " + id);
+        List<Long> abilityIds = dotaCharacter.getAbilities().stream()
+                .map(Ability::getId)
+                .collect(Collectors.toList());
         DotaCharacter updatedCharacter =
                 checkEntity(characterService.updateCharacter(id,
-                dotaCharacter,
-                abilityIds),
-                "Failed to update character with id: " + id);
+                                dotaCharacter,
+                                abilityIds),
+                        "Failed to update character with id: " + id);
         logSuccess("updated character with id: " + id);
         return updatedCharacter;
     }
 
-    @PatchMapping("/characters/patch/{id}")
-    public DotaCharacter patchCharacter(@PathVariable Long id,
+    @PatchMapping("/characters/patch")
+    public DotaCharacter patchCharacter(@RequestParam("id") Long id,
                                         @RequestBody DotaCharacter dotaCharacter,
                                         @RequestParam(required = false) List<Long> abilityIds)
             throws EntityNotFoundException {
@@ -183,8 +181,8 @@ public class CharacterController {
         return characters;
     }
 
-    @DeleteMapping("/characters/delete/{id}")
-    public String deleteCharacter(@PathVariable Long id) {
+    @DeleteMapping("/characters/delete")
+    public String deleteCharacter(@RequestParam("id") Long id) {
         logAttempt("delete character with id: " + id);
 
         DotaCharacter character = characterService.getCharacterById(id);

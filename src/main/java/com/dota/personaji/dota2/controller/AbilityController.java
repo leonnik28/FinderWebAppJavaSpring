@@ -1,31 +1,31 @@
 package com.dota.personaji.dota2.controller;
 
+import com.dota.personaji.dota2.exception.EntityNotFoundException;
 import com.dota.personaji.dota2.model.Ability;
+import com.dota.personaji.dota2.model.DotaCharacter;
 import com.dota.personaji.dota2.service.AbilityService;
 import java.util.List;
+
+import com.dota.personaji.dota2.service.DotaCharacterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api")
 public class AbilityController {
 
     private final AbilityService abilityService;
 
+    private final DotaCharacterService dotaCharacterService;
+
     @Autowired
-    public AbilityController(AbilityService abilityService) {
+    public AbilityController(AbilityService abilityService, DotaCharacterService dotaCharacterService) {
         this.abilityService = abilityService;
+        this.dotaCharacterService = dotaCharacterService;
     }
 
     @GetMapping("/abilities")
@@ -36,6 +36,17 @@ public class AbilityController {
                     .body("No abilities found");
         }
         return ResponseEntity.ok(abilities);
+    }
+
+    @GetMapping("/abilities/name/character")
+    public DotaCharacter getCharacterByAbilityName(@RequestParam("name") String name) {
+        Ability ability = abilityService.getAbilityByName(name);
+        return dotaCharacterService.getCharacterByAbility(ability);
+    }
+
+    @GetMapping("/abilities/name")
+    public Ability getAbilityByName(@RequestParam("name") String name) {
+        return abilityService.getAbilityByName(name);
     }
 
     @GetMapping("/abilities/{id}")
