@@ -5,7 +5,6 @@ import com.dota.personaji.dota2.model.DotaCharacter;
 import com.dota.personaji.dota2.service.DotaCharacterService;
 import com.dota.personaji.dota2.model.Ability;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +37,6 @@ public class CharacterController {
         logger.info("Successfully {}", action);
     }
 
-
     private <T> T checkEntity(T entity, String errorMessage) throws EntityNotFoundException {
         if (entity == null) {
             throw new EntityNotFoundException(errorMessage);
@@ -46,37 +44,27 @@ public class CharacterController {
         return entity;
     }
 
-    @GetMapping("/characters")
-    public List<DotaCharacter> getAllCharacters() throws EntityNotFoundException {
-        return checkEntity(characterService.getAllCharacters(),
-                NO_CHARACTERS_FOUND);
-    }
-
     @GetMapping("/characters/{id}")
     public DotaCharacter getCharacterById(@PathVariable Long id) throws EntityNotFoundException {
-        logAttempt("get character with id: " + id);
-        DotaCharacter character = checkEntity(characterService.getCharacterById(id),
-                "Character not found for id: " + id);
-        logSuccess("retrieved character with id: " + id);
+        logAttempt("get character by id");
+        DotaCharacter character = checkEntity(characterService.getCharacterById(id), NO_CHARACTERS_FOUND + " with id: " + id);
+        logSuccess("retrieved character");
         return character;
     }
 
     @GetMapping("/characters/name")
-    public List<DotaCharacter> getCharacterByName(@RequestParam String name)
-            throws EntityNotFoundException {
-        logAttempt("get characters with name: " + name);
-        List<DotaCharacter> characters = checkEntity(characterService.getCharacterByName(name),
-                NO_CHARACTERS_FOUND + " with name: " + name);
-        logSuccess("retrieved characters with name: " + name);
+    public List<DotaCharacter> getCharacterByName(@RequestParam String name) throws EntityNotFoundException {
+        logAttempt("get characters by name");
+        List<DotaCharacter> characters = checkEntity(characterService.getCharacterByName(name), NO_CHARACTERS_FOUND + " with name: " + name);
+        logSuccess("retrieved characters");
         return characters;
     }
 
     @GetMapping("/characters/power")
     public List<DotaCharacter> getCharactersByPowerDesc() throws EntityNotFoundException {
-        logAttempt("get characters by power desc");
-        List<DotaCharacter> characters = checkEntity(characterService.getCharactersByPowerDesc(),
-                NO_CHARACTERS_FOUND);
-        logSuccess("retrieved characters by power desc");
+        logAttempt("get characters by power descending");
+        List<DotaCharacter> characters = checkEntity(characterService.getCharactersByPowerDesc(), NO_CHARACTERS_FOUND);
+        logSuccess("retrieved characters");
         return characters;
     }
 
