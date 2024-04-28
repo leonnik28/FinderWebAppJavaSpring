@@ -62,7 +62,7 @@ public class CharacterController {
     }
 
     @GetMapping("/characters/name")
-    public List<DotaCharacter> getCharacterByName(@RequestParam("name") String name)
+    public List<DotaCharacter> getCharacterByName(@RequestParam String name)
             throws EntityNotFoundException {
         logAttempt("get characters with name: " + name);
         List<DotaCharacter> characters = checkEntity(characterService.getCharacterByName(name),
@@ -106,7 +106,7 @@ public class CharacterController {
         logAttempt("save character");
         List<Long> abilityIds = dotaCharacter.getAbilities().stream()
                 .map(Ability::getId)
-                .collect(Collectors.toList());
+                .toList();
         DotaCharacter savedCharacter = checkEntity(characterService.saveCharacter(dotaCharacter,
                 abilityIds), "Failed to save character");
         logSuccess("saved character");
@@ -114,13 +114,13 @@ public class CharacterController {
     }
 
     @PutMapping("/characters/update")
-    public DotaCharacter updateCharacter(@RequestParam("id") Long id,
+    public DotaCharacter updateCharacter(@RequestParam Long id,
                                          @RequestBody DotaCharacter dotaCharacter)
             throws EntityNotFoundException {
         logAttempt("update character with id: " + id);
         List<Long> abilityIds = dotaCharacter.getAbilities().stream()
                 .map(Ability::getId)
-                .collect(Collectors.toList());
+                .toList();
         DotaCharacter updatedCharacter =
                 checkEntity(characterService.updateCharacter(id,
                                 dotaCharacter,
@@ -131,7 +131,7 @@ public class CharacterController {
     }
 
     @PatchMapping("/characters/patch")
-    public DotaCharacter patchCharacter(@RequestParam("id") Long id,
+    public DotaCharacter patchCharacter(@RequestParam Long id,
                                         @RequestBody DotaCharacter dotaCharacter,
                                         @RequestParam(required = false) List<Long> abilityIds)
             throws EntityNotFoundException {

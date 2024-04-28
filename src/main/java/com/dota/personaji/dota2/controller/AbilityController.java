@@ -1,6 +1,5 @@
 package com.dota.personaji.dota2.controller;
 
-import com.dota.personaji.dota2.exception.EntityNotFoundException;
 import com.dota.personaji.dota2.model.Ability;
 import com.dota.personaji.dota2.model.DotaCharacter;
 import com.dota.personaji.dota2.service.AbilityService;
