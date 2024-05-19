@@ -6,9 +6,9 @@ import com.dota.personaji.dota2.dao.CharacterRepository;
 import com.dota.personaji.dota2.model.Ability;
 import com.dota.personaji.dota2.model.DotaCharacter;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -168,6 +168,39 @@ public class DotaCharacterService {
     public List<DotaCharacter> getStrongCharacters(int power) {
         requestCounterService.increment();
         return characterRepository.findStrongCharacters(power);
+    }
+
+    public List<DotaCharacter> findClosestCharactersByName(String name) {
+        DotaCharacter character = characterRepository.findByName(name).stream().findFirst().orElse(null);
+
+        if (character == null) {
+            return Collections.emptyList();
+        }
+
+        Long characterId = character.getId();
+        List<DotaCharacter> allCharacters = characterRepository.findAll();
+        DotaCharacter previousCharacter = null;
+        DotaCharacter nextCharacter = null;
+
+        for (DotaCharacter currentCharacter : allCharacters) {
+            Long currentId = currentCharacter.getId();
+
+            if (currentId.equals(characterId)) {
+                continue;
+            }
+
+            if (currentId < characterId && (previousCharacter == null || currentId > previousCharacter.getId())) {
+                previousCharacter = currentCharacter;
+            }
+
+            if (currentId > characterId && (nextCharacter == null || currentId < nextCharacter.getId())) {
+                nextCharacter = currentCharacter;
+            }
+        }
+
+        return Stream.of(previousCharacter, nextCharacter)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     public String deleteCharacter(Long id) {

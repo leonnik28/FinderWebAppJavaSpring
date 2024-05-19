@@ -44,6 +44,12 @@ public class CharacterController {
         return entity;
     }
 
+    @GetMapping("/characters")
+    public List<DotaCharacter> getAllCharacters() throws EntityNotFoundException {
+        return checkEntity(characterService.getAllCharacters(),
+                NO_CHARACTERS_FOUND);
+    }
+
     @GetMapping("/characters/{id}")
     public DotaCharacter getCharacterById(@PathVariable Long id) throws EntityNotFoundException {
         logAttempt("get character by id");
@@ -166,6 +172,14 @@ public class CharacterController {
             throw new EntityNotFoundException(NO_CHARACTERS_FOUND + " with power: " + power);
         }
         logSuccess("retrieved strong characters with power: " + power);
+        return characters;
+    }
+
+    @GetMapping("/characters/closest")
+    public List<DotaCharacter> getClosestCharactersByName(@RequestParam String name) throws EntityNotFoundException {
+        logAttempt("get closest characters by name");
+        List<DotaCharacter> characters = checkEntity(characterService.findClosestCharactersByName(name), NO_CHARACTERS_FOUND + " with name: " + name);
+        logSuccess("retrieved closest characters");
         return characters;
     }
 
