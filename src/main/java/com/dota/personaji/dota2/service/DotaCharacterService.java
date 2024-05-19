@@ -200,7 +200,8 @@ public class DotaCharacterService {
 
         return Stream.of(previousCharacter, nextCharacter)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList();
+
     }
 
     public String deleteCharacter(Long id) {
