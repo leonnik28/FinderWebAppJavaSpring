@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@CrossOrigin(origins = "https://finderwebappjavaspring.onrender.com/")
+@CrossOrigin(origins = {"http://localhost:3000", "https://web-app-by-java-frontend.vercel.app/"})
 @RequestMapping("/api")
 public class AbilityController {
 
