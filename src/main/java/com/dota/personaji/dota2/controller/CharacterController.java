@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "https://web-app-by-java-frontend.vercel.app/"})
+@CrossOrigin(origins = {"http://localhost:3000", "https://web-app-by-java-frontend.vercel.app/", "https://finderwebappjavaspring.onrender.com"})
 @RequestMapping("/api")
 public class CharacterController {
 
